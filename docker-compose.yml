@@ -1,0 +1,7 @@
+version: '3.1'
+services:
+  backend:
+    build: ./backend
+    container_name: digital_preservation_backend
+    ports:
+      - "8080:8080"
