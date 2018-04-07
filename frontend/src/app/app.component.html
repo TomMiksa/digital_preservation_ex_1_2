@@ -1,27 +1,9 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>MyMaterial</span>
+    <span>Digital Preservation Exercise 1.2</span>
 
-    <span class="example-spacer"></span>
+    <span class="toolbar-spacer"></span>
 
-    <button mat-button>About</button>
-    <button mat-button>Services</button>
-    <button mat-button>Contact</button>
+    <button mat-button (click)="openORCID()"><mat-icon class="iD-icon" svgIcon="iD"></mat-icon>Create or Connect your ORCID iD</button>
   </mat-toolbar-row>
 </mat-toolbar>
-
-<mat-card>
-  <mat-form-field>
-    <input matInput [(ngModel)]="answer" placeholder="Placeholder">
-  </mat-form-field>
-
-  <br>
-
-  <button mat-raised-button (click)="showAnswer()">Answer me</button>
-  <mat-spinner [style.display]="showSpinner? 'block' : 'none'"></mat-spinner>
-</mat-card>
-
-<mat-card *ngIf="answerDisplay">
-  <h1>{{answerDisplay}}, is the answer.</h1>
-</mat-card>
-

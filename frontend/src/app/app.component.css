@@ -1,7 +1,7 @@
-.example-icon {
-  padding: 0 14px;
+.iD-icon {
+  padding: 0 5px 0 0;
 }
 
-.example-spacer {
+.toolbar-spacer {
   flex: 1 1 auto;
 }

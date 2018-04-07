@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatIconRegistry } from "@angular/material";
+import { DomSanitizer } from "@angular/platform-browser";
 
 @Component({
   selector: 'app-root',
@@ -7,15 +9,19 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-  answer: string = '';
-  answerDisplay: string = '';
-  showSpinner: boolean = false;
-
-  showAnswer() {
-    this.showSpinner = true;
-    setTimeout(() => {
-      this.answerDisplay = this.answer;
-      this.showSpinner = false;
-    }, 2000)
+  constructor(
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
+  ){
+    this.matIconRegistry.addSvgIcon(
+      "iD",
+      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/iD_icon.svg")
+    );
   }
+
+  openORCID() {
+    console.log("Open ORCID for authentication and authorization");
+    var oauthWindow = window.open("https://orcid.org/oauth/authorize?client_id=APP-XKGDV7S0FH0UDKAX&response_type=code&scope=/authenticate&redirect_uri=http://localhost:4200", "_self");
+  }
+
 }
