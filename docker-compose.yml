@@ -5,3 +5,8 @@ services:
     container_name: digital_preservation_backend
     ports:
       - "8080:8080"
+  frontend:
+    build: ./frontend
+    container_name: digital_preservation_frontend
+    ports:
+      - "4200:4200"
