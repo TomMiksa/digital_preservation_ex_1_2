@@ -25,12 +25,7 @@ export class HomeComponent implements OnInit {
   }
 
   openORCID() {
-    //this.authService.authorize();
-    this.authService.getToken().subscribe(
-      data => { console.log(data)},
-      err => console.error(err),
-      () => console.log('Done loading access token')
-    );
+    this.authService.authorize();
   }
 
 }
