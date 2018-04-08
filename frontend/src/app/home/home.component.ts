@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatIconRegistry} from "@angular/material";
 import {DomSanitizer} from "@angular/platform-browser";
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 export class HomeComponent implements OnInit {
 
   constructor(
+    private authService: AuthService,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ){
@@ -23,8 +25,12 @@ export class HomeComponent implements OnInit {
   }
 
   openORCID() {
-    console.log("Open ORCID for authentication and authorization");
-    var oauthWindow = window.open("https://orcid.org/oauth/authorize?client_id=APP-XKGDV7S0FH0UDKAX&response_type=code&scope=/authenticate&redirect_uri=http://localhost:4200", "_self");
+    //this.authService.authorize();
+    this.authService.getToken().subscribe(
+      data => { console.log(data)},
+      err => console.error(err),
+      () => console.log('Done loading access token')
+    );
   }
 
 }
