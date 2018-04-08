@@ -10,12 +10,17 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
 import {AuthService} from "./auth.service";
+import { AuthComponent } from './auth/auth.component';
+import {AuthGuard} from "./auth/auth.guard";
+import { DmpComponent } from './dmp/dmp.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    HomeComponent,
+    AuthComponent,
+    DmpComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +30,7 @@ import {AuthService} from "./auth.service";
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

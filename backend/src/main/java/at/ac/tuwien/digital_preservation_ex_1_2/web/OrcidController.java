@@ -3,12 +3,13 @@ package at.ac.tuwien.digital_preservation_ex_1_2.web;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidTokenResponse;
 import at.ac.tuwien.digital_preservation_ex_1_2.service.IOrcidService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class OrcidController {
 
   @Autowired

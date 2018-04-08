@@ -38,8 +38,8 @@ public class OrcidService implements IOrcidService {
         .encode()
         .toUri();
 
-      return restTemplate.postForObject(uri, null, OrcidTokenResponse.class);
+    return restTemplate.postForObject(uri, null, OrcidTokenResponse.class);
 
-    }
+  }
 
 }
