@@ -1,9 +1,28 @@
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <span>Digital Preservation Exercise 1.2</span>
+<div>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Digital Preservation Exercise 1.2</span>
 
-    <span class="toolbar-spacer"></span>
+      <span class="toolbar-spacer"></span>
 
-    <button mat-button (click)="logout()"><mat-icon class="iD-icon" svgIcon="iD"></mat-icon>{{name}}</button>
-  </mat-toolbar-row>
-</mat-toolbar>
+      <button mat-button (click)="logout()"><mat-icon class="iD-icon" svgIcon="iD"></mat-icon>{{name}}</button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div>
+    <div class="left">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Administrative data</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><b>Orcid-Identifier: </b></p>
+          <p><b>Family name: </b></p>
+          <p><b>Given name: </b></p>
+          <p><b>E-Mail: </b></p>
+          <p><b>Country: </b></p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

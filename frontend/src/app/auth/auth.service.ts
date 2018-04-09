@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {AuthResponse} from "../model/authresponse";
+import {OrcidToken} from "../model/orcidToken";
 
 @Injectable()
 export class AuthService {
@@ -26,7 +26,7 @@ export class AuthService {
     var url = new String("http://localhost:8080/auth")
     .concat("?code=" + code);
 
-    this.http.post<AuthResponse>(url, null).subscribe(
+    this.http.post<OrcidToken>(url, null).subscribe(
       data => {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("name", data.name);
