@@ -1,9 +1,8 @@
 package at.ac.tuwien.digital_preservation_ex_1_2.service.impl;
 
-import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidRecordResponse;
-import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidTokenResponse;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidRecord;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidToken;
 import at.ac.tuwien.digital_preservation_ex_1_2.entity.User;
-import at.ac.tuwien.digital_preservation_ex_1_2.repository.UserRepository;
 import at.ac.tuwien.digital_preservation_ex_1_2.service.IOrcidService;
 import at.ac.tuwien.digital_preservation_ex_1_2.service.IUserService;
 import java.net.URI;
@@ -38,7 +37,7 @@ public class OrcidService implements IOrcidService {
   private IUserService userService;
 
   @Override
-  public OrcidTokenResponse getToken(String code) {
+  public OrcidToken getToken(String code) {
 
     URI uri = UriComponentsBuilder.newInstance()
         .scheme("https").host("orcid.org")
@@ -52,8 +51,8 @@ public class OrcidService implements IOrcidService {
         .encode()
         .toUri();
 
-    OrcidTokenResponse orcidTokenResponse =
-        restTemplate.postForObject(uri, null, OrcidTokenResponse.class);
+    OrcidToken orcidTokenResponse =
+        restTemplate.postForObject(uri, null, OrcidToken.class);
 
     User user = new User(orcidTokenResponse.getOrcid(), orcidTokenResponse.getAccessToken());
     userService.update(user);
@@ -63,11 +62,11 @@ public class OrcidService implements IOrcidService {
   }
 
   @Override
-  public OrcidRecordResponse getRecord(String orcid) {
+  public OrcidRecord getRecord(String orcid) {
 
     URI uri = UriComponentsBuilder.newInstance()
         .scheme("https").host("pub.orcid.org")
-        .path("/v2.1/{orcid}/person")
+        .path("/v2.1/{orcid}/record")
         .buildAndExpand(orcid)
         .encode()
         .toUri();
@@ -79,14 +78,12 @@ public class OrcidService implements IOrcidService {
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + access_token);
 
-    HttpEntity<String> entityReq = new HttpEntity<>(null, headers);
+    HttpEntity<OrcidRecord> entityReq = new HttpEntity<>(null, headers);
 
-    ResponseEntity<String> respEntity = restTemplate
-        .exchange(uri, HttpMethod.GET, entityReq, String.class);
+    ResponseEntity<OrcidRecord> respEntity = restTemplate
+        .exchange(uri, HttpMethod.GET, entityReq, OrcidRecord.class);
 
-    System.out.println(respEntity.getBody());
-
-    return null;
+    return respEntity.getBody();
 
   }
 

@@ -1,9 +1,11 @@
 package at.ac.tuwien.digital_preservation_ex_1_2.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Objects;
 
-public class OrcidTokenResponse {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class OrcidToken {
 
   @JsonProperty("access_token")
   private String accessToken;
@@ -26,7 +28,7 @@ public class OrcidTokenResponse {
   @JsonProperty("orcid")
   private String orcid;
 
-  public OrcidTokenResponse() {
+  public OrcidToken() {
   }
 
   public String getAccessToken() {
@@ -93,7 +95,7 @@ public class OrcidTokenResponse {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    OrcidTokenResponse that = (OrcidTokenResponse) o;
+    OrcidToken that = (OrcidToken) o;
     return Objects.equals(accessToken, that.accessToken) &&
         Objects.equals(tokenType, that.tokenType) &&
         Objects.equals(refreshToken, that.refreshToken) &&
@@ -111,7 +113,7 @@ public class OrcidTokenResponse {
 
   @Override
   public String toString() {
-    return "OrcidTokenResponse{" +
+    return "OrcidToken{" +
         "accessToken='" + accessToken + '\'' +
         ", tokenType='" + tokenType + '\'' +
         ", refreshToken='" + refreshToken + '\'' +

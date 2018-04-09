@@ -1,0 +1,333 @@
+{
+  "orcid-identifier": {
+    "uri": "https://orcid.org/0000-0002-9612-9022",
+    "path": "0000-0002-9612-9022",
+    "host": "orcid.org"
+  },
+  "preferences": {
+    "locale": "EN"
+  },
+  "history": {
+    "creation-method": "DIRECT",
+    "completion-date": null,
+    "submission-date": {
+      "value": 1521657257772
+    },
+    "last-modified-date": {
+      "value": 1523286194228
+    },
+    "claimed": true,
+    "source": null,
+    "deactivation-date": null,
+    "verified-email": true,
+    "verified-primary-email": true
+  },
+  "person": {
+    "last-modified-date": {
+      "value": 1523286046014
+    },
+    "name": {
+      "created-date": {
+        "value": 1521657257772
+      },
+      "last-modified-date": {
+        "value": 1521657258008
+      },
+      "given-names": {
+        "value": "Michael"
+      },
+      "family-name": {
+        "value": "Sober"
+      },
+      "credit-name": null,
+      "source": null,
+      "visibility": "PUBLIC",
+      "path": "0000-0002-9612-9022"
+    },
+    "other-names": {
+      "last-modified-date": null,
+      "other-name": [],
+      "path": "/0000-0002-9612-9022/other-names"
+    },
+    "biography": null,
+    "researcher-urls": {
+      "last-modified-date": null,
+      "researcher-url": [],
+      "path": "/0000-0002-9612-9022/researcher-urls"
+    },
+    "emails": {
+      "last-modified-date": {
+        "value": 1523286046014
+      },
+      "email": [
+        {
+          "created-date": {
+            "value": 1521657258008
+          },
+          "last-modified-date": {
+            "value": 1523286046014
+          },
+          "source": {
+            "source-orcid": {
+              "uri": "https://orcid.org/0000-0002-9612-9022",
+              "path": "0000-0002-9612-9022",
+              "host": "orcid.org"
+            },
+            "source-client-id": null,
+            "source-name": {
+              "value": "Michael Sober"
+            }
+          },
+          "email": "michael.p.sober@gmail.com",
+          "path": null,
+          "visibility": "PUBLIC",
+          "verified": true,
+          "primary": false,
+          "put-code": null
+        }
+      ],
+      "path": "/0000-0002-9612-9022/email"
+    },
+    "addresses": {
+      "last-modified-date": {
+        "value": 1521657703409
+      },
+      "address": [
+        {
+          "created-date": {
+            "value": 1521657703409
+          },
+          "last-modified-date": {
+            "value": 1521657703409
+          },
+          "source": {
+            "source-orcid": {
+              "uri": "https://orcid.org/0000-0002-9612-9022",
+              "path": "0000-0002-9612-9022",
+              "host": "orcid.org"
+            },
+            "source-client-id": null,
+            "source-name": {
+              "value": "Michael Sober"
+            }
+          },
+          "country": {
+            "value": "AT"
+          },
+          "visibility": "PUBLIC",
+          "path": "/0000-0002-9612-9022/address/928202",
+          "put-code": 928202,
+          "display-index": 1
+        }
+      ],
+      "path": "/0000-0002-9612-9022/address"
+    },
+    "keywords": {
+      "last-modified-date": null,
+      "keyword": [],
+      "path": "/0000-0002-9612-9022/keywords"
+    },
+    "external-identifiers": {
+      "last-modified-date": null,
+      "external-identifier": [],
+      "path": "/0000-0002-9612-9022/external-identifiers"
+    },
+    "path": "/0000-0002-9612-9022/person"
+  },
+  "activities-summary": {
+    "last-modified-date": {
+      "value": 1523123762035
+    },
+    "educations": {
+      "last-modified-date": {
+        "value": 1523123762035
+      },
+      "education-summary": [
+        {
+          "created-date": {
+            "value": 1523123731470
+          },
+          "last-modified-date": {
+            "value": 1523123762035
+          },
+          "source": {
+            "source-orcid": {
+              "uri": "https://orcid.org/0000-0002-9612-9022",
+              "path": "0000-0002-9612-9022",
+              "host": "orcid.org"
+            },
+            "source-client-id": null,
+            "source-name": {
+              "value": "Michael Sober"
+            }
+          },
+          "department-name": "Software Engineering",
+          "role-title": "MSc",
+          "start-date": {
+            "year": {
+              "value": "2018"
+            },
+            "month": {
+              "value": "04"
+            },
+            "day": {
+              "value": "04"
+            }
+          },
+          "end-date": null,
+          "organization": {
+            "name": "Technische Universität Wien",
+            "address": {
+              "city": "Wien",
+              "region": "Wien",
+              "country": "AT"
+            },
+            "disambiguated-organization": null
+          },
+          "visibility": "PUBLIC",
+          "put-code": 5649722,
+          "path": "/0000-0002-9612-9022/education/5649722"
+        },
+        {
+          "created-date": {
+            "value": 1521657493132
+          },
+          "last-modified-date": {
+            "value": 1523123692046
+          },
+          "source": {
+            "source-orcid": {
+              "uri": "https://orcid.org/0000-0002-9612-9022",
+              "path": "0000-0002-9612-9022",
+              "host": "orcid.org"
+            },
+            "source-client-id": null,
+            "source-name": {
+              "value": "Michael Sober"
+            }
+          },
+          "department-name": "Software Engineering",
+          "role-title": "BSc",
+          "start-date": {
+            "year": {
+              "value": "2013"
+            },
+            "month": {
+              "value": "10"
+            },
+            "day": {
+              "value": "01"
+            }
+          },
+          "end-date": {
+            "year": {
+              "value": "2018"
+            },
+            "month": {
+              "value": "03"
+            },
+            "day": {
+              "value": "27"
+            }
+          },
+          "organization": {
+            "name": "Technische Universität Wien",
+            "address": {
+              "city": "Wien",
+              "region": "Wien",
+              "country": "AT"
+            },
+            "disambiguated-organization": {
+              "disambiguated-organization-identifier": "27259",
+              "disambiguation-source": "RINGGOLD"
+            }
+          },
+          "visibility": "PUBLIC",
+          "put-code": 5566667,
+          "path": "/0000-0002-9612-9022/education/5566667"
+        },
+        {
+          "created-date": {
+            "value": 1521657655118
+          },
+          "last-modified-date": {
+            "value": 1521657655118
+          },
+          "source": {
+            "source-orcid": {
+              "uri": "https://orcid.org/0000-0002-9612-9022",
+              "path": "0000-0002-9612-9022",
+              "host": "orcid.org"
+            },
+            "source-client-id": null,
+            "source-name": {
+              "value": "Michael Sober"
+            }
+          },
+          "department-name": null,
+          "role-title": null,
+          "start-date": {
+            "year": {
+              "value": "2008"
+            },
+            "month": {
+              "value": "09"
+            },
+            "day": {
+              "value": "01"
+            }
+          },
+          "end-date": {
+            "year": {
+              "value": "2013"
+            },
+            "month": {
+              "value": "07"
+            },
+            "day": {
+              "value": "01"
+            }
+          },
+          "organization": {
+            "name": "Höhere Technische Bundeslehranstalt",
+            "address": {
+              "city": "Kapfenberg",
+              "region": "Steiermark",
+              "country": "AT"
+            },
+            "disambiguated-organization": {
+              "disambiguated-organization-identifier": "440608",
+              "disambiguation-source": "RINGGOLD"
+            }
+          },
+          "visibility": "PUBLIC",
+          "put-code": 5566680,
+          "path": "/0000-0002-9612-9022/education/5566680"
+        }
+      ],
+      "path": "/0000-0002-9612-9022/educations"
+    },
+    "employments": {
+      "last-modified-date": null,
+      "employment-summary": [],
+      "path": "/0000-0002-9612-9022/employments"
+    },
+    "fundings": {
+      "last-modified-date": null,
+      "group": [],
+      "path": "/0000-0002-9612-9022/fundings"
+    },
+    "peer-reviews": {
+      "last-modified-date": null,
+      "group": [],
+      "path": "/0000-0002-9612-9022/peer-reviews"
+    },
+    "works": {
+      "last-modified-date": null,
+      "group": [],
+      "path": "/0000-0002-9612-9022/works"
+    },
+    "path": "/0000-0002-9612-9022/activities"
+  },
+  "path": "/0000-0002-9612-9022"
+}

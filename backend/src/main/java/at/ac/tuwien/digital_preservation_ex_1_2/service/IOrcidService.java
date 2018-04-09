@@ -1,12 +1,12 @@
 package at.ac.tuwien.digital_preservation_ex_1_2.service;
 
-import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidRecordResponse;
-import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidTokenResponse;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidRecord;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidToken;
 
 public interface IOrcidService {
 
-  OrcidTokenResponse getToken(String code);
+  OrcidToken getToken(String code);
 
-  OrcidRecordResponse getRecord(String orcid);
+  OrcidRecord getRecord(String orcid);
 
 }
