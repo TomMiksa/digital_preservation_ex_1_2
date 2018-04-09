@@ -1,9 +1,12 @@
 package at.ac.tuwien.digital_preservation_ex_1_2.web;
 
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidRecordResponse;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidTokenResponse;
 import at.ac.tuwien.digital_preservation_ex_1_2.service.IOrcidService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +21,11 @@ public class OrcidController {
   @PostMapping("/auth")
   public OrcidTokenResponse getToken(@RequestParam String code) {
     return orcidService.getToken(code);
+  }
+
+  @GetMapping("/record/{orcid}")
+  public OrcidRecordResponse getRecord(@PathVariable String orcid) {
+    return orcidService.getRecord(orcid);
   }
 
 }

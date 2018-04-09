@@ -109,4 +109,16 @@ public class OrcidTokenResponse {
     return Objects.hash(accessToken, tokenType, refreshToken, expiresIn, scope, name, orcid);
   }
 
+  @Override
+  public String toString() {
+    return "OrcidTokenResponse{" +
+        "accessToken='" + accessToken + '\'' +
+        ", tokenType='" + tokenType + '\'' +
+        ", refreshToken='" + refreshToken + '\'' +
+        ", expiresIn=" + expiresIn +
+        ", scope='" + scope + '\'' +
+        ", name='" + name + '\'' +
+        ", orcid='" + orcid + '\'' +
+        '}';
+  }
 }
