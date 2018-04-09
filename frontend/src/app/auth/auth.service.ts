@@ -1,17 +1,8 @@
 import { Injectable } from '@angular/core';
-import { environment } from "../environments/environment";
+import { environment } from "../../environments/environment";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
-
-interface AuthResponse {
-  access_token: string;
-  token_type: string;
-  refresh_token: string;
-  expires_in: number;
-  scope: string;
-  name: string;
-  orcid: string;
-}
+import {AuthResponse} from "../model/authresponse";
 
 @Injectable()
 export class AuthService {
@@ -42,7 +33,10 @@ export class AuthService {
         localStorage.setItem("orcid", data.orcid);
         this.router.navigate(['/dmp']);
       },
-      err => console.error(err),
+      err => {
+        console.error(err);
+        this.router.navigate(['/']);
+      },
       () => console.log('Done loading token')
     );
   }

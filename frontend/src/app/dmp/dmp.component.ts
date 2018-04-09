@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../auth/auth.service";
 
 @Component({
   selector: 'app-dmp',
@@ -26,9 +26,7 @@ export class DmpComponent implements OnInit {
 
   ngOnInit() {
     this.name = localStorage.getItem("name");
-    console.log(this.name);
     this.orcid = localStorage.getItem("orcid");
-    console.log(this.orcid);
   }
 
   logout() {
