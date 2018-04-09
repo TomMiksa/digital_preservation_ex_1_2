@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../auth/auth.service";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-dmp',
@@ -15,6 +16,7 @@ export class DmpComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private http: HttpClient,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ){
@@ -27,6 +29,19 @@ export class DmpComponent implements OnInit {
   ngOnInit() {
     this.name = localStorage.getItem("name");
     this.orcid = localStorage.getItem("orcid");
+
+    var url = new String("http://localhost:8080/record/")
+    .concat(this.orcid);
+
+    this.http.get<any>(url).subscribe(
+      orcidRecord => {
+        console.log(orcidRecord);
+      },
+      err => {
+        console.error(err);
+      },
+      () => console.log('Done loading orcid record.')
+    );
   }
 
   logout() {
