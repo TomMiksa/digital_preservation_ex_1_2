@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatIconRegistry} from "@angular/material";
 import {DomSanitizer} from "@angular/platform-browser";
 import {AuthService} from "../auth/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private matIconRegistry: MatIconRegistry,
+    private router: Router,
     private domSanitizer: DomSanitizer
   ){
     this.matIconRegistry.addSvgIcon(
@@ -22,6 +24,9 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authService.isAuthenticated()){
+      this.router.navigate(['/dmp']);
+    }
   }
 
   openORCID() {

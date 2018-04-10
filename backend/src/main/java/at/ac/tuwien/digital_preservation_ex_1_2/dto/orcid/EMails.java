@@ -1,8 +1,7 @@
-package at.ac.tuwien.digital_preservation_ex_1_2.dto;
+package at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)

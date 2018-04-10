@@ -3,6 +3,7 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../auth/auth.service";
 import {HttpClient} from "@angular/common/http";
+import {AdministrativeData} from "../model/administrativeData";
 
 @Component({
   selector: 'app-dmp',
@@ -13,6 +14,7 @@ export class DmpComponent implements OnInit {
 
   name: string;
   orcid: string;
+  administrativeData: AdministrativeData;
 
   constructor(
     private authService: AuthService,
@@ -30,17 +32,18 @@ export class DmpComponent implements OnInit {
     this.name = localStorage.getItem("name");
     this.orcid = localStorage.getItem("orcid");
 
-    var url = new String("http://localhost:8080/record/")
+    var url = new String("http://localhost:8080/administrative/")
     .concat(this.orcid);
 
-    this.http.get<any>(url).subscribe(
-      orcidRecord => {
-        console.log(orcidRecord);
+    this.http.get<AdministrativeData>(url).subscribe(
+      data => {
+        console.log(data);
+        this.administrativeData = data;
       },
       err => {
         console.error(err);
       },
-      () => console.log('Done loading orcid record.')
+      () => console.log('Done loading administrative data.')
     );
   }
 

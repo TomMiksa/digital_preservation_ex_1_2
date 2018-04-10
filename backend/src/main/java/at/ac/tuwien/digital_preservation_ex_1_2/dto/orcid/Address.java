@@ -1,23 +1,22 @@
-package at.ac.tuwien.digital_preservation_ex_1_2.dto;
+package at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Address {
 
   @JsonProperty("country")
-  private JsonNode country;
+  private Country country;
 
   public Address() {
   }
 
-  public JsonNode getCountry() {
+  public Country getCountry() {
     return country;
   }
 
-  public void setCountry(JsonNode country) {
+  public void setCountry(Country country) {
     this.country = country;
   }
 }

@@ -16,11 +16,11 @@
           <mat-card-title><h2>Administrative data</h2></mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p><b>Orcid-Identifier: </b></p>
-          <p><b>Family name: </b></p>
-          <p><b>Given name: </b></p>
-          <p><b>E-Mail: </b></p>
-          <p><b>Country: </b></p>
+          <p><b>Orcid-Identifier: </b>{{administrativeData?.orcid}}</p>
+          <p><b>Family name: </b>{{administrativeData?.family_name}}</p>
+          <p><b>Given name: </b>{{administrativeData?.given_name}}</p>
+          <p><b>E-Mail: </b>{{administrativeData?.email}}</p>
+          <p><b>Country: </b>{{administrativeData?.country}}</p>
         </mat-card-content>
       </mat-card>
     </div>

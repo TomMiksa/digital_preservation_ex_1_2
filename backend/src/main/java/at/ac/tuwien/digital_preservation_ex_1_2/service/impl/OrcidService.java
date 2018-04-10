@@ -1,7 +1,7 @@
 package at.ac.tuwien.digital_preservation_ex_1_2.service.impl;
 
-import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidRecord;
-import at.ac.tuwien.digital_preservation_ex_1_2.dto.OrcidToken;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.OrcidRecord;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.OrcidToken;
 import at.ac.tuwien.digital_preservation_ex_1_2.entity.User;
 import at.ac.tuwien.digital_preservation_ex_1_2.service.IOrcidService;
 import at.ac.tuwien.digital_preservation_ex_1_2.service.IUserService;
@@ -74,7 +74,7 @@ public class OrcidService implements IOrcidService {
     String access_token = userService.findByOrcid(orcid).getAccessToken();
 
     HttpHeaders headers = new HttpHeaders();
-    headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
+    headers.setAccept(Arrays.asList(new MediaType[]{MediaType.APPLICATION_JSON}));
     headers.setContentType(MediaType.APPLICATION_JSON);
     headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + access_token);
 

@@ -32,9 +32,9 @@ public class UserService implements IUserService {
 
     User updatedUser;
 
-    try{
+    try {
       updatedUser = findByOrcid(user.getOrcid());
-    }catch(UserNotFoundException e){
+    } catch (UserNotFoundException e) {
       save(user);
       return;
     }
