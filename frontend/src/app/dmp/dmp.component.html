@@ -5,12 +5,15 @@
 
       <span class="toolbar-spacer"></span>
 
-      <button mat-button (click)="logout()"><mat-icon class="iD-icon" svgIcon="iD"></mat-icon>{{name}}</button>
+      <button mat-button (click)="logout()">
+        <mat-icon class="iD-icon" svgIcon="iD"></mat-icon>
+        {{name}}
+      </button>
     </mat-toolbar-row>
   </mat-toolbar>
 
   <div>
-    <div class="left">
+    <div class="">
       <mat-card>
         <mat-card-header>
           <mat-card-title><h2>Administrative data</h2></mat-card-title>
@@ -25,4 +28,46 @@
       </mat-card>
     </div>
   </div>
+
+  <div *ngFor="let resource of resources">
+    <div class="" style="margin-top: 2em">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Resource</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-radio-group [(ngModel)]="resource.resourceType">
+            <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
+              {{type}}
+            </mat-radio-button>
+          </mat-radio-group>
+
+          <div *ngIf="resource.resourceType == 'GitHub'">
+            <mat-form-field>
+              <input matInput placeholder="GitHub repository" [(ngModel)]="resource.gitHubUserName"
+                     (keyup)="fetchGitHub(resource)">
+            </mat-form-field>
+
+          </div>
+          <div *ngIf="resource.resourceType == 'DOI'">
+            <mat-form-field>
+              <input matInput placeholder="doi link">
+            </mat-form-field>
+          </div>
+          <div>
+            {{resource.errorMsg}}
+          </div>
+          <div>
+            <mat-label>resource license:</mat-label>
+            {{resource.license}}
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <div style="margin-top: 2em">
+    <button mat-button (click)="addResource()">ADD Resource</button>
+  </div>
+
 </div>
