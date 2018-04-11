@@ -4,6 +4,8 @@ import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../auth/auth.service";
 import {HttpClient} from "@angular/common/http";
 import {AdministrativeData} from "../model/administrativeData";
+import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
+import {GitHubResource, Resources} from "../model/resources";
 
 @Component({
   selector: 'app-dmp',
@@ -19,9 +21,9 @@ export class DmpComponent implements OnInit {
 
   resourceTypes = ['GitHub', 'DOI'];
   resourceType: string;
-  resources = [{
+  resources: Resources[] = [{
     resourceType: 'GitHub',
-    gitHubUserName: 'soberm/digital_preservation_ex_1_2',
+    repoName: 'soberm/digital_preservation_ex_1_2'
   }];
 
 
@@ -64,28 +66,65 @@ export class DmpComponent implements OnInit {
     this.resources.push({})
   }
 
-  fetchGitHub(resource) {
-
-    this.http.get('https://api.github.com/repos/' + resource.gitHubUserName).subscribe(
+  fetchGitHub(resource: GitHubResource) {
+    const repoName = resource.repoName.trim()
+    this.http.get<GitHubResponse>('https://api.github.com/repos/' + repoName).subscribe(
       data => this.extractGitHubData(resource, data),
       err => this.displayError(resource)
     )
   }
 
-  private extractGitHubData(resource, data) {
-    this.removeError(resource)
-    resource.license = data.license.name
+  private extractGitHubData(resource: GitHubResource, data: GitHubResponse) {
+    this.removeError(resource);
+    if (data.license !== null) {
+      resource.license = data.license.name;
+      this.getLicense(resource, data);
+    }
 
+    resource.owner = data.owner;
+    resource.size = data.size;
+
+    this.getLanguages(resource, data);
+    this.getContributors(resource, data);
   }
 
-  private displayError(resource) {
+  private getContributors(resource: GitHubResource, data: GitHubResponse) {
+    this.http.get<GitHubUser[]>(data.contributors_url).subscribe(
+      data => resource.contributors = data
+    );
+  }
+
+  private getLicense(resource: GitHubResource, data: GitHubResponse) {
+    this.http.get<GitHubLicense>(data.license.url).subscribe(
+      data => resource.licence_url = data.html_url
+    );
+  }
+
+  private getLanguages(resource: GitHubResource, data: GitHubResponse) {
+    this.http.get(data.languages_url).subscribe(
+      data => this.extractLanguages(resource, data)
+    );
+  }
+
+  private extractLanguages(resource: GitHubResource, data) {
+    const languages: GitHubLanguageEntry[] = [];
+    for (let key in data) {
+      const language: GitHubLanguageEntry = {
+        name: key,
+        loc: data[key]
+      };
+      languages.push(language);
+    }
+    resource.languages = languages
+  }
+
+  private displayError(resource: Resources) {
     resource.errorMsg = "there was an error";
   }
 
-  private removeError(resource) {
-    resource.errorMsg = "";
+  private removeError(resource: Resources) {
+    resource.errorMsg = '';
   }
-
 
 
 }

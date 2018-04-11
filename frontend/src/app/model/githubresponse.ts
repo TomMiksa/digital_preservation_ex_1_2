@@ -1,11 +1,15 @@
 export interface GitHubResponse {
-  owner: GitHubOwner;
+  owner: GitHubUser;
   license: License;
+  languages_url: string;
+  size: number;
+  contributors_url: string;
 }
 
-export interface GitHubOwner {
+export interface GitHubUser {
   login: string;
   avatar: string;
+  html_url: string;
 }
 
 export interface License {
@@ -20,6 +24,7 @@ export interface GitHubLicense {
   html_url: string;
 }
 
-export interface GitHubLanguage {
-
+export interface GitHubLanguageEntry {
+  name: string;
+  loc: number;
 }
