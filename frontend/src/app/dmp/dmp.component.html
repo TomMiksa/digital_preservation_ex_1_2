@@ -48,11 +48,45 @@
                 <input matInput placeholder="GitHub repository" [(ngModel)]="resource.repoName"
                        (keyup)="fetchGitHub(resource)" (click)="fetchGitHub(resource)">
               </mat-form-field>
+
+              <div *ngIf="resource.errorMsg === ''">
+                <div>
+                  <p>GitHub: </p>
+
+                  <p *ngIf="resource.licence_url !== ''">
+                    <a [href]="resource.licence_url" target="_blank">{{resource.license}}</a>
+                  </p>
+                  <p *ngIf="resource.licence_url === ''">
+                    no licence information is provided
+                  </p>
+                  Repo Owner:
+                  <p *ngIf="resource.owner !== undefined ">
+                    <a [href]="resource.owner.html_url" target="_blank"> {{resource.owner.login}} </a>
+                  </p>
+
+
+                  <br/>
+                  Server side size: {{resource.size}} KB<br/>
+                  Contributors:
+                  <p *ngFor="let contributor of resource.contributors">
+                    <a [href]="contributor.html_url" target="_blank"> {{contributor.login}}</a>
+                  </p>
+                  Languages:
+                  <p *ngFor="let language of resource.languages">
+                    {{language.name}} - {{language.loc}}
+                  </p>
+                </div>
+              </div>
+
             </div>
+
             <div *ngIf="resource.resourceType == 'DOI'">
               <mat-form-field>
-                <input matInput placeholder="doi link">
+                <input matInput placeholder="doi link" (keyup)="fetchDOIMetadata(resource)"
+                       (click)="fetchDOIMetadata(resource)" [(ngModel)]="resource.doiLink">
               </mat-form-field>
+
+
             </div>
           </div>
 
@@ -60,36 +94,6 @@
           <div *ngIf="resource.errorMsg !== ''">
             <div>
               {{resource.errorMsg}}
-            </div>
-          </div>
-          <div *ngIf="resource.errorMsg === ''">
-            <div>
-              <p>GitHub: </p>
-
-              <p *ngIf="resource.licence_url !== ''">
-                <a [href]="resource.licence_url" target="_blank">{{resource.license}}</a>
-              </p>
-              <p *ngIf="resource.licence_url === ''">
-                no licence information is provided
-              </p>
-              Repo Owner:
-
-
-              <p *ngIf="resource.owner !== undefined ">
-                <a [href]="resource.owner.html_url" target="_blank"> {{resource.owner.login}} </a>
-              </p>
-
-
-              <br/>
-              Size: {{resource.size}} MB<br/>
-              Contributors:
-              <p *ngFor="let contributor of resource.contributors">
-                <a [href]="contributor.html_url" target="_blank"> {{contributor.login}}</a>
-              </p>
-              Languages:
-              <p *ngFor="let language of resource.languages">
-                {{language.name}} - {{language.loc}}
-              </p>
             </div>
           </div>
 

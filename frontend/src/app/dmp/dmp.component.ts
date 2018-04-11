@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../auth/auth.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AdministrativeData} from "../model/administrativeData";
 import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
-import {GitHubResource, Resources} from "../model/resources";
+import {DOIResource, GitHubResource, Resources} from "../model/resources";
 
 @Component({
   selector: 'app-dmp',
@@ -22,8 +22,8 @@ export class DmpComponent implements OnInit {
   resourceTypes = ['GitHub', 'DOI'];
   resourceType: string;
   resources: Resources[] = [{
-    resourceType: 'GitHub',
-    repoName: 'soberm/digital_preservation_ex_1_2'
+    resourceType: 'DOI',
+    doiLink: '1207653'
   }];
 
 
@@ -48,13 +48,11 @@ export class DmpComponent implements OnInit {
 
     this.http.get<AdministrativeData>(url).subscribe(
       data => {
-        console.log(data);
         this.administrativeData = data;
       },
       err => {
         console.error(err);
-      },
-      () => console.log('Done loading administrative data.')
+      }
     );
   }
 
@@ -64,6 +62,23 @@ export class DmpComponent implements OnInit {
 
   addResource() {
     this.resources.push({})
+  }
+
+  fetchDOIMetadata(resource: DOIResource) {
+
+    const doi = resource.doiLink.trim();
+    const url = 'http://localhost:8080/zenodo/'.concat(doi);
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'text/xml')
+      .append('Access-Control-Allow-Origin', '*');
+
+    this.http.get(url, {
+      headers: headers,
+      responseType: 'text'
+    }).subscribe(
+      data => console.log(data)
+    )
   }
 
   fetchGitHub(resource: GitHubResource) {
