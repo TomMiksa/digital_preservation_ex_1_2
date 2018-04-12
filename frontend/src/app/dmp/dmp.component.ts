@@ -23,8 +23,8 @@ export class DmpComponent implements OnInit {
   resourceTypes = ['GitHub', 'DOI'];
   resourceType: string;
   resources: Resources[] = [{
-    resourceType: 'DOI',
-    doiLink: '1207653'
+    resourceType: 'GitHub',
+    repoName: 'soberm/digital_preservation_ex_1_2'
   }];
 
 
