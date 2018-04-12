@@ -14,6 +14,7 @@ import {DOIResource, GitHubResource, Resources} from "../model/resources";
 })
 export class DmpComponent implements OnInit {
 
+
   name: string;
   orcid: string;
   administrativeData: AdministrativeData;
@@ -77,8 +78,36 @@ export class DmpComponent implements OnInit {
       headers: headers,
       responseType: 'text'
     }).subscribe(
-      data => console.log(data)
+      data => this.parseDOIData(resource, data)
     )
+  }
+
+  private parseDOIData(resource: DOIResource, data: string) {
+    const fastXmlParser = require('fast-xml-parser');
+    const options = {
+      attributeNamePrefix: "@_",
+      attrNodeName: "attr", //default is 'false'
+      textNodeName: "#text",
+      ignoreAttributes: true,
+      ignoreNameSpace: false,
+      allowBooleanAttributes: false,
+      parseNodeValue: true,
+      parseAttributeValue: false,
+      trimValues: true,
+      cdataTagName: "__cdata", //default is 'false'
+      cdataPositionChar: "\\c"
+    };
+
+    const tObj = fastXmlParser.getTraversalObj(data, options);
+    const jsonObj = fastXmlParser.convertToJson(tObj, options);
+    const metadata = jsonObj['OAI-PMH']['GetRecord']['record']['metadata']['oai_dc:dc'];
+    resource.creators = metadata['dc:creator'];
+    resource.date = metadata['dc:date'];
+    resource.title = metadata['dc:title'];
+    resource.description = metadata['dc:description'];
+    resource.zenodo_identifier = metadata['dc:identifier'][0];
+    resource.license = metadata['dc:rights'][1]
+
   }
 
   fetchGitHub(resource: GitHubResource) {
