@@ -15,6 +15,7 @@ import {AuthGuard} from "./auth/auth.guard";
 import {DmpComponent} from './dmp/dmp.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {GithubComponent} from './dmp/github/github.component';
+import {DoiComponent} from './dmp/doi/doi.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {GithubComponent} from './dmp/github/github.component';
     HomeComponent,
     AuthComponent,
     DmpComponent,
-    GithubComponent
+    GithubComponent,
+    DoiComponent
   ],
   imports: [
     BrowserModule,
