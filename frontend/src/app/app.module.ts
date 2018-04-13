@@ -13,6 +13,7 @@ import {AuthService} from "./auth/auth.service";
 import {AuthComponent} from './auth/auth.component';
 import {AuthGuard} from "./auth/auth.guard";
 import {DmpComponent} from './dmp/dmp.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import {DmpComponent} from './dmp/dmp.component';
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
+    NgxChartsModule
   ],
   providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]

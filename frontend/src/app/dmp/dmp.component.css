@@ -6,7 +6,16 @@
   flex: 1 1 auto;
 }
 
+.container {
+  display: grid;
+  grid-template-columns: 45% 5% 50%;
+}
+
 .left {
-  float: left;
-  width: 50%;
+  grid-column-start: 1;
+
+}
+
+.right {
+  grid-column-start: 3;
 }

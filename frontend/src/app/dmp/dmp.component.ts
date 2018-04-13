@@ -15,18 +15,24 @@ import {DOIResource, GitHubResource, Resources} from "../model/resources";
 export class DmpComponent implements OnInit {
 
 
+  view: any[] = [700, 400];
+
+  showLegend = true;
+
+  tags = ['input', 'software', 'data'];
+
   name: string;
   orcid: string;
   administrativeData: AdministrativeData;
 
 
   resourceTypes = ['GitHub', 'DOI'];
-  resourceType: string;
   resources: Resources[] = [{
     resourceType: 'GitHub',
+    license: '',
+    errorMsg: '',
     repoName: 'soberm/digital_preservation_ex_1_2'
   }];
-
 
   constructor(
     private authService: AuthService,
@@ -57,12 +63,24 @@ export class DmpComponent implements OnInit {
     );
   }
 
+  changeTag(resource: Resources, event) {
+    resource.tag = event.value;
+    this.resources.sort((a, b) => a.tag.localeCompare(b.tag))
+  }
+
   logout() {
     this.authService.logout();
   }
 
   addResource() {
-    this.resources.push({})
+    const res = {
+      resourceType: '',
+      license: '',
+      errorMsg: '',
+      tag: 'not_tagged',
+    };
+    this.resources.push(res);
+
   }
 
   fetchDOIMetadata(resource: DOIResource) {
@@ -152,14 +170,19 @@ export class DmpComponent implements OnInit {
 
   private extractLanguages(resource: GitHubResource, data) {
     const languages: GitHubLanguageEntry[] = [];
+    const res_lang = [];
     for (let key in data) {
+      res_lang.push({name: key, value: data[key]})
+
       const language: GitHubLanguageEntry = {
         name: key,
         loc: data[key]
       };
       languages.push(language);
     }
-    resource.languages = languages
+    resource.languages = languages;
+    resource.language_chart = res_lang
+    // console.log("language chart: " + resource.language_chart)
   }
 
   private displayError(resource: Resources) {

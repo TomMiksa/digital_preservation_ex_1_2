@@ -4,6 +4,7 @@ export interface Resources {
   resourceType: string;
   license: string;
   errorMsg: string;
+  tag: string;
 }
 
 
@@ -14,6 +15,7 @@ export interface GitHubResource extends Resources {
   contributors: GitHubUser[];
   licence_url: string;
   languages: GitHubLanguageEntry[];
+  language_chart: any[];
 }
 
 
