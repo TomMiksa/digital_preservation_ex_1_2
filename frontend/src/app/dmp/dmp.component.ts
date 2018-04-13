@@ -19,20 +19,17 @@ export class DmpComponent implements OnInit {
 
   showLegend = true;
 
+  resourceLink: string;
+  resourceTag: string;
   tags = ['input', 'software', 'data'];
-
+  resourceType: string;
   name: string;
   orcid: string;
   administrativeData: AdministrativeData;
 
 
   resourceTypes = ['GitHub', 'DOI'];
-  resources: Resources[] = [{
-    resourceType: 'GitHub',
-    license: '',
-    errorMsg: '',
-    repoName: 'soberm/digital_preservation_ex_1_2'
-  }];
+  resources: Resources[] = [];
 
   constructor(
     private authService: AuthService,
@@ -50,7 +47,7 @@ export class DmpComponent implements OnInit {
     this.name = localStorage.getItem("name");
     this.orcid = localStorage.getItem("orcid");
 
-    var url = new String("http://localhost:8080/administrative/")
+    const url = new String("http://localhost:8080/administrative/")
       .concat(this.orcid);
 
     this.http.get<AdministrativeData>(url).subscribe(
@@ -63,29 +60,41 @@ export class DmpComponent implements OnInit {
     );
   }
 
-  changeTag(resource: Resources, event) {
-    resource.tag = event.value;
-    this.resources.sort((a, b) => a.tag.localeCompare(b.tag))
-  }
 
   logout() {
     this.authService.logout();
   }
 
   addResource() {
-    const res = {
-      resourceType: '',
+    const res: Resources = {
+      resourceType: this.resourceType,
       license: '',
       errorMsg: '',
-      tag: 'not_tagged',
+      tag: this.resourceTag,
     };
+
+    if (this.resourceType === 'GitHub') {
+      this.fetchGitHub(res);
+    } else {
+      this.fetchDOIMetadata(res);
+    }
+
     this.resources.push(res);
+    this.resources.sort((a, b) => a.tag.localeCompare(b.tag))
 
   }
 
+  removeResource(index: number) {
+    this.resources = [
+      ...this.resources.slice(0, index),
+      ...this.resources.slice(index + 1)
+    ];
+  }
+
+
   fetchDOIMetadata(resource: DOIResource) {
 
-    const doi = resource.doiLink.trim();
+    const doi = this.resourceLink.trim();
     const url = 'http://localhost:8080/zenodo/'.concat(doi);
 
     const headers = new HttpHeaders()
@@ -129,7 +138,8 @@ export class DmpComponent implements OnInit {
   }
 
   fetchGitHub(resource: GitHubResource) {
-    const repoName = resource.repoName.trim()
+    const repoName = this.resourceLink.trim()
+    resource.repoName = repoName
     this.http.get<GitHubResponse>('https://api.github.com/repos/' + repoName).subscribe(
       data => this.extractGitHubData(resource, data),
       err => this.displayError(resource)

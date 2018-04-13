@@ -14,6 +14,7 @@ import {AuthComponent} from './auth/auth.component';
 import {AuthGuard} from "./auth/auth.guard";
 import {DmpComponent} from './dmp/dmp.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
+import {GithubComponent} from './dmp/github/github.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
     AppComponent,
     HomeComponent,
     AuthComponent,
-    DmpComponent
+    DmpComponent,
+    GithubComponent
   ],
   imports: [
     BrowserModule,

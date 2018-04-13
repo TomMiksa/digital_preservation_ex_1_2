@@ -31,39 +31,26 @@
 
 
     <div class="right">
-      <div *ngFor="let resource of resources" class="right">
+      <div *ngFor="let i=index;let resource of resources" class="right">
         <div>
           <mat-card>
             <mat-card-header>
               <mat-card-title><h2>Resource</h2></mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <mat-radio-group [(ngModel)]="resource.resourceType">
-                <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
-                  {{type}}
-                </mat-radio-button>
-              </mat-radio-group>
-
-
-              <mat-form-field>
-                <mat-select placeholder="tag" (selectionChange)="changeTag(resource, $event)">
-                  <mat-option *ngFor="let tag of tags" [value]="tag">
-                    {{ tag }}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
 
 
               <div style="margin-top: 2em">
                 <div *ngIf="resource.resourceType == 'GitHub'">
-                  <mat-form-field>
-                    <input matInput placeholder="GitHub repository" [(ngModel)]="resource.repoName"
-                           (keyup)="fetchGitHub(resource)" (click)="fetchGitHub(resource)">
-                  </mat-form-field>
+
 
                   <div *ngIf="resource.errorMsg === ''">
                     <div>
                       <p>GitHub: </p>
+
+                      <p>
+                        {{resource.repoName}}
+                      </p>
 
                       <p *ngIf="resource.licence_url !== ''">
                         <a [href]="resource.licence_url" target="_blank">{{resource.license}}</a>
@@ -93,25 +80,12 @@
                       <p *ngFor="let language of resource.languages">
                         {{language.name}} - {{language.loc}}
                       </p>
-
-                      <!--<ngx-charts-pie-chart-->
-                      <!--[view]="view"-->
-                      <!--[results]="resource.language_chart"-->
-                      <!--[legend]="showLegend"-->
-                      <!--&gt;</ngx-charts-pie-chart>-->
-
-
                     </div>
                   </div>
 
                 </div>
 
                 <div *ngIf="resource.resourceType == 'DOI'">
-                  <mat-form-field>
-                    <input matInput placeholder="doi link" (keyup)="fetchDOIMetadata(resource)"
-                           (click)="fetchDOIMetadata(resource)" [(ngModel)]="resource.doiLink">
-                  </mat-form-field>
-
                   creators:
                   <p *ngFor="let creator of resource.creators">
                     {{creator}}
@@ -144,6 +118,10 @@
                 </div>
               </div>
 
+              <div style="margin-top: 2em">
+                <button mat-button (click)="removeResource(i)">REMOVE Resource</button>
+              </div>
+
             </mat-card-content>
           </mat-card>
         </div>
@@ -151,7 +129,29 @@
     </div>
 
     <div class="left">
-      another lefty <br/>
+
+      <mat-radio-group [(ngModel)]="resourceType">
+        <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
+          {{type}}
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <br/>
+
+      <mat-form-field>
+        <input matInput placeholder="resource link or DOI" [(ngModel)]="resourceLink">
+      </mat-form-field>
+
+      <br/>
+
+      <mat-form-field>
+        <mat-select placeholder="tag" [(value)]="resourceTag">
+          <mat-option *ngFor="let tag of tags" [value]="tag">
+            {{ tag }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
       <div style="margin-top: 2em">
         <button mat-button (click)="addResource()">ADD Resource</button>
       </div>
