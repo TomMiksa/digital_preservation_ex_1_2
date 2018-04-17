@@ -3,8 +3,9 @@ import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../service/auth.service";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {AdministrativeData} from "../model/administrativeData";
+import {AdministrativeData} from "../model/administrative-data";
 import {Router} from "@angular/router";
+import {AdministrativeDataService} from "../service/administrative-data.service";
 
 @Component({
   selector: 'app-dmp',
@@ -49,6 +50,7 @@ export class DmpComponent implements OnInit {
   }
 
   handleSuccessFullAdministrativeDataResponse(administrativeData: AdministrativeData) {
+    console.log("Successfully retrieved administrative data.");
     this.administrativeData = administrativeData;
   }
 

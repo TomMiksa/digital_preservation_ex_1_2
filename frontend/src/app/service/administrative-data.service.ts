@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {AdministrativeData} from "../model/administrativeData";
+import {AdministrativeData} from "../model/administrative-data";
 
 @Injectable()
 export class AdministrativeDataService {

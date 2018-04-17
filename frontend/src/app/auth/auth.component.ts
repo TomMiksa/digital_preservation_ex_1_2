@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../service/auth.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {OrcidToken} from "../model/orcidToken";
+import {OrcidToken} from "../model/orcid-token";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
-import {OrcidToken} from "../model/orcidToken";
+import {OrcidToken} from "../model/orcid-token";
 
 @Injectable()
 export class AuthService {
