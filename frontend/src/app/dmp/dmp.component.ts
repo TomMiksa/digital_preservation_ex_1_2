@@ -134,7 +134,7 @@ export class DmpComponent implements OnInit {
   }
 
 
-  fetchDOIMetadata(resource: DOIResource) {
+  fetchDOIMetadata(resource) {
 
     const form = this.resourceForm.value;
 
@@ -173,7 +173,6 @@ export class DmpComponent implements OnInit {
     const tObj = fastXmlParser.getTraversalObj(data, options);
     const jsonObj = fastXmlParser.convertToJson(tObj, options);
 
-    console.log(jsonObj);
 
     const metadata = jsonObj['OAI-PMH']['GetRecord']['record']['metadata']['oai_dc:dc'];
     resource.creators = metadata['dc:creator'];
@@ -190,7 +189,7 @@ export class DmpComponent implements OnInit {
 
   }
 
-  fetchGitHub(resource: GitHubResource) {
+  fetchGitHub(resource) {
     const form = this.resourceForm.value;
     const repoName = form.resourceLink.trim()
     resource.repoName = repoName
