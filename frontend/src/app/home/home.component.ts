@@ -30,7 +30,7 @@ export class HomeComponent implements OnInit {
   }
 
   openORCID() {
-    this.authService.authorize();
+    this.authService.authenticate();
   }
 
 }
