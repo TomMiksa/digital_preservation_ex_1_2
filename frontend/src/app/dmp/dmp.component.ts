@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
-import {AuthService} from "../auth/auth.service";
-import {HttpClient} from "@angular/common/http";
-import {AdministrativeData} from "../model/administrativeData";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AdministrativeDataService} from "../service/administrative-data.service";
 import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
 import {DOIResource, GitHubResource, Resources} from "../model/resources";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {AdministrativeData} from "../model/administrative-data";
+import {AuthService} from "../service/auth.service";
 
 
 @Component({
@@ -21,7 +21,6 @@ export class DmpComponent implements OnInit {
   name: string;
   orcid: string;
   administrativeData: AdministrativeData;
-  name: string;
 
   resourceLink: string;
   resourceTag: string;
@@ -36,6 +35,7 @@ export class DmpComponent implements OnInit {
   resourceForm: FormGroup;
 
   constructor(
+    private http: HttpClient,
     private authService: AuthService,
     private administrativeDataService: AdministrativeDataService,
     private router: Router,
@@ -66,7 +66,7 @@ export class DmpComponent implements OnInit {
     );
 
     this.resourceForm = new FormGroup({
-      resType: new FormControl('', Validators.required),
+      resourceType: new FormControl('', Validators.required),
       resourceLink: new FormControl('', Validators.required),
       resourceTag: new FormControl('', Validators.required)
     })
@@ -97,11 +97,12 @@ export class DmpComponent implements OnInit {
   }
 
   addResource() {
+    const form = this.resourceForm.value;
     let res: Resources = {
-      resourceType: this.resourceType,
+      resourceType: form.resourceType,
       license: '',
       errorMsg: '',
-      tag: this.resourceTag,
+      tag: form.resourceTag,
     };
 
     let taggedResources = this.tagMap.get(res.tag);
@@ -114,7 +115,7 @@ export class DmpComponent implements OnInit {
 
     this.tagMap.set(res.tag, taggedResources);
 
-    if (this.resourceType === 'GitHub') {
+    if (form.resourceType === 'GitHub') {
       this.fetchGitHub(res);
     } else {
       this.fetchDOIMetadata(res);
@@ -135,7 +136,10 @@ export class DmpComponent implements OnInit {
 
   fetchDOIMetadata(resource: DOIResource) {
 
-    const doi = this.resourceLink.trim();
+    const form = this.resourceForm.value;
+
+
+    const doi = form.resourceLink.trim();
     const url = 'http://localhost:8080/zenodo/'.concat(doi);
 
     const headers = new HttpHeaders()
@@ -187,7 +191,8 @@ export class DmpComponent implements OnInit {
   }
 
   fetchGitHub(resource: GitHubResource) {
-    const repoName = this.resourceLink.trim()
+    const form = this.resourceForm.value;
+    const repoName = form.resourceLink.trim()
     resource.repoName = repoName
     this.http.get<GitHubResponse>('https://api.github.com/repos/' + repoName).subscribe(
       data => this.extractGitHubData(resource, data),

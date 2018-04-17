@@ -31,7 +31,7 @@
 
     <div class="left resource_data">
       <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
-        <mat-radio-group formControlName="resType">
+        <mat-radio-group formControlName="resourceType">
           <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
             {{type}}
           </mat-radio-button>
@@ -54,27 +54,9 @@
         </mat-form-field>
 
         <div style="margin-top: 2em">
-          <button mat-button type="submit" [disabled]="resourceForm.invalid">ADD Resource</button>
+          <button mat-button [disabled]="resourceForm.invalid">ADD Resource</button>
         </div>
       </form>
-    </div>
-
-    <div class="left preservation_duration">
-      <form #preservationDurationForm="ngForm">
-        <p *ngFor="let tag of tags">
-          {{tag}}
-          <mat-form-field required>
-            <mat-select placeholder="preservation duration">
-              <mat-option *ngFor="let duration of preservationDuration" [value]="duration">
-                {{ duration }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </p>
-      </form>
-      <div>
-        <button mat-button [disabled]="!preservationDurationForm.form.valid">generate DMP</button>
-      </div>
     </div>
 
 
