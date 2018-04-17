@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
-import {AuthService} from "../auth/auth.service";
-import {HttpClient} from "@angular/common/http";
-import {AdministrativeData} from "../model/administrativeData";
+import {AuthService} from "../service/auth.service";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {AdministrativeData} from "../model/administrative-data";
+import {Router} from "@angular/router";
+import {AdministrativeDataService} from "../service/administrative-data.service";
 
 @Component({
   selector: 'app-dmp',
@@ -12,13 +14,14 @@ import {AdministrativeData} from "../model/administrativeData";
 })
 export class DmpComponent implements OnInit {
 
-  name: string;
-  orcid: string;
   administrativeData: AdministrativeData;
+  name: string;
 
   constructor(
     private authService: AuthService,
+    private administrativeDataService: AdministrativeDataService,
     private http: HttpClient,
+    private router: Router,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
   ){
@@ -29,26 +32,39 @@ export class DmpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.name = localStorage.getItem("name");
-    this.orcid = localStorage.getItem("orcid");
+    let orcidToken = this.authService.getPrincipal();
+    let orcid = orcidToken.orcid;
+    this.name = orcidToken.name;
 
-    var url = new String("http://localhost:8080/administrative/")
-    .concat(this.orcid);
-
-    this.http.get<AdministrativeData>(url).subscribe(
-      data => {
-        console.log(data);
-        this.administrativeData = data;
+    this.administrativeDataService.getAdministrativeData(orcid).subscribe(
+      administrativeData => {
+        this.handleSuccessFullAdministrativeDataResponse(administrativeData)
       },
       err => {
-        console.error(err);
+        this.handleFailedAdministrativeDataResponse(err);
       },
-      () => console.log('Done loading administrative data.')
+      () => {
+        this.handleFinishedAdministrativeDataResponse();
+      }
     );
   }
 
+  handleSuccessFullAdministrativeDataResponse(administrativeData: AdministrativeData) {
+    console.log("Successfully retrieved administrative data.");
+    this.administrativeData = administrativeData;
+  }
+
+  handleFailedAdministrativeDataResponse(errorResponse: HttpErrorResponse) {
+    console.error(errorResponse);
+  }
+
+  handleFinishedAdministrativeDataResponse() {
+    console.log("Successfully retrieved administrative data.")
+  }
+
   logout() {
-    this.authService.logout();
+    this.authService.clearAccessToken();
+    this.router.navigate(['/']);
   }
 
 }
