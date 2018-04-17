@@ -20,7 +20,6 @@ export class DmpComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private administrativeDataService: AdministrativeDataService,
-    private http: HttpClient,
     private router: Router,
     private matIconRegistry: MatIconRegistry,
     private domSanitizer: DomSanitizer
