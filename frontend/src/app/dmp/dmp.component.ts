@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../service/auth.service";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AdministrativeData} from "../model/administrativeData";
 import {Router} from "@angular/router";
 
@@ -18,6 +18,7 @@ export class DmpComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private administrativeDataService: AdministrativeDataService,
     private http: HttpClient,
     private router: Router,
     private matIconRegistry: MatIconRegistry,
@@ -30,24 +31,33 @@ export class DmpComponent implements OnInit {
   }
 
   ngOnInit() {
-
     let orcidToken = this.authService.getPrincipal();
     let orcid = orcidToken.orcid;
     this.name = orcidToken.name;
 
-    var url = new String("http://localhost:8080/administrative/")
-    .concat(orcid);
-
-    this.http.get<AdministrativeData>(url).subscribe(
-      data => {
-        console.log(data);
-        this.administrativeData = data;
+    this.administrativeDataService.getAdministrativeData(orcid).subscribe(
+      administrativeData => {
+        this.handleSuccessFullAdministrativeDataResponse(administrativeData)
       },
       err => {
-        console.error(err);
+        this.handleFailedAdministrativeDataResponse(err);
       },
-      () => console.log('Done loading administrative data.')
+      () => {
+        this.handleFinishedAdministrativeDataResponse();
+      }
     );
+  }
+
+  handleSuccessFullAdministrativeDataResponse(administrativeData: AdministrativeData) {
+    this.administrativeData = administrativeData;
+  }
+
+  handleFailedAdministrativeDataResponse(errorResponse: HttpErrorResponse) {
+    console.error(errorResponse);
+  }
+
+  handleFinishedAdministrativeDataResponse() {
+    console.log("Successfully retrieved administrative data.")
   }
 
   logout() {

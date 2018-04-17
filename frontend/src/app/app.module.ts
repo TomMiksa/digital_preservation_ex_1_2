@@ -13,6 +13,7 @@ import {AuthService} from "./service/auth.service";
 import { AuthComponent } from './auth/auth.component';
 import {AuthGuard} from "./guard/auth.guard";
 import { DmpComponent } from './dmp/dmp.component';
+import {AdministrativeDataService} from "./service/administrative-data.service";
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { DmpComponent } from './dmp/dmp.component';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [AuthService, AuthGuard],
+  providers: [AuthService, AdministrativeDataService, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

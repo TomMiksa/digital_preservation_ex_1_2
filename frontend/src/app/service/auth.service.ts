@@ -49,13 +49,12 @@ export class AuthService {
     const name: string = localStorage.getItem("name");
     const orcid: string = localStorage.getItem("orcid");
     const orcidToken: OrcidToken = new OrcidToken(access_token, name, orcid);
-    console.log(orcidToken);
+
     return orcidToken;
   }
 
   setAccessToken(orcidToken: OrcidToken) {
     console.log("Saving access token in local storage.");
-    console.log(orcidToken)
     localStorage.setItem("access_token", orcidToken.access_token);
     localStorage.setItem("name", orcidToken.name);
     localStorage.setItem("orcid", orcidToken.orcid);
