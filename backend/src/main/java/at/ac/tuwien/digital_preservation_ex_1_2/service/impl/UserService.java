@@ -65,7 +65,7 @@ public class UserService implements IUserService {
     User user = userRepository.findByOrcid(orcid);
 
     if (user == null) {
-      throw new UserNotFoundException("The specified guest(" + orcid + ") doesn't exist.");
+      throw new UserNotFoundException("The specified user(" + orcid + ") doesn't exist.");
     }
 
     return user;

@@ -1,12 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
 import {AuthService} from "../auth/auth.service";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {AdministrativeData} from "../model/administrativeData";
+import {Router} from "@angular/router";
+import {AdministrativeDataService} from "../service/administrative-data.service";
 import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
 import {DOIResource, GitHubResource, Resources} from "../model/resources";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+
 
 @Component({
   selector: 'app-dmp',
@@ -15,20 +18,16 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class DmpComponent implements OnInit {
 
-
-  view: any[] = [700, 400];
-
-  showLegend = true;
+  name: string;
+  orcid: string;
+  administrativeData: AdministrativeData;
+  name: string;
 
   resourceLink: string;
   resourceTag: string;
   tags = ['input', 'software', 'data'];
   preservationDuration = [5, 10, 20, 50];
   resourceType: string;
-  name: string;
-  orcid: string;
-  administrativeData: AdministrativeData;
-
 
   resourceTypes = ['GitHub', 'DOI'];
   resources: Resources[] = [];
@@ -38,9 +37,11 @@ export class DmpComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private http: HttpClient,
+    private administrativeDataService: AdministrativeDataService,
+    private router: Router,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer) {
+    private domSanitizer: DomSanitizer
+  ){
     this.matIconRegistry.addSvgIcon(
       "iD",
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/iD_icon.svg")
@@ -48,18 +49,19 @@ export class DmpComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.name = localStorage.getItem("name");
-    this.orcid = localStorage.getItem("orcid");
+    let orcidToken = this.authService.getPrincipal();
+    let orcid = orcidToken.orcid;
+    this.name = orcidToken.name;
 
-    const url = new String("http://localhost:8080/administrative/")
-      .concat(this.orcid);
-
-    this.http.get<AdministrativeData>(url).subscribe(
-      data => {
-        this.administrativeData = data;
+    this.administrativeDataService.getAdministrativeData(orcid).subscribe(
+      administrativeData => {
+        this.handleSuccessFullAdministrativeDataResponse(administrativeData)
       },
       err => {
-        console.error(err);
+        this.handleFailedAdministrativeDataResponse(err);
+      },
+      () => {
+        this.handleFinishedAdministrativeDataResponse();
       }
     );
 
@@ -72,9 +74,22 @@ export class DmpComponent implements OnInit {
 
   }
 
+  handleSuccessFullAdministrativeDataResponse(administrativeData: AdministrativeData) {
+    console.log("Successfully retrieved administrative data.");
+    this.administrativeData = administrativeData;
+  }
+
+  handleFailedAdministrativeDataResponse(errorResponse: HttpErrorResponse) {
+    console.error(errorResponse);
+  }
+
+  handleFinishedAdministrativeDataResponse() {
+    console.log("Successfully retrieved administrative data.")
+  }
 
   logout() {
-    this.authService.logout();
+    this.authService.clearAccessToken();
+    this.router.navigate(['/']);
   }
 
   onSubmit() {
