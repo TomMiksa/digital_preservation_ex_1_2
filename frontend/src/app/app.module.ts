@@ -5,7 +5,7 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MaterialModule} from './material.module';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from './/app-routing.module';
 import {HomeComponent} from './home/home.component';
@@ -16,7 +16,6 @@ import {DmpComponent} from './dmp/dmp.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {GithubComponent} from './dmp/github/github.component';
 import {DoiComponent} from './dmp/doi/doi.component';
-
 
 @NgModule({
   declarations: [
@@ -29,6 +28,7 @@ import {DoiComponent} from './dmp/doi/doi.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,

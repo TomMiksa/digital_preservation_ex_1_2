@@ -14,7 +14,7 @@
 
 
   <div class="container">
-    <div class="left">
+    <div class="left admin_data">
       <mat-card>
         <mat-card-header>
           <mat-card-title><h2>Administrative data</h2></mat-card-title>
@@ -29,9 +29,59 @@
       </mat-card>
     </div>
 
+    <div class="left resource_data">
+      <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
+        <mat-radio-group formControlName="resType">
+          <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
+            {{type}}
+          </mat-radio-button>
+        </mat-radio-group>
 
-    <div class="right">
-      <div *ngFor="let i=index;let resource of resources" class="right">
+        <br/>
+
+        <mat-form-field>
+          <input matInput placeholder="resource link or DOI" formControlName="resourceLink">
+        </mat-form-field>
+
+        <br/>
+
+        <mat-form-field>
+          <mat-select placeholder="tag" formControlName="resourceTag">
+            <mat-option *ngFor="let tag of tags" [value]="tag">
+              {{ tag }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div style="margin-top: 2em">
+          <button mat-button type="submit" [disabled]="resourceForm.invalid">ADD Resource</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="left preservation_duration">
+      <form #preservationDurationForm="ngForm">
+        <p *ngFor="let tag of tags">
+          {{tag}}
+          <mat-form-field required>
+            <mat-select placeholder="preservation duration">
+              <mat-option *ngFor="let duration of preservationDuration" [value]="duration">
+                {{ duration }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </p>
+      </form>
+      <div>
+        <button mat-button [disabled]="!preservationDurationForm.form.valid">generate DMP</button>
+      </div>
+    </div>
+
+
+    <div *ngFor="let entry of tagMap.keys()" class="right">
+      Category: {{entry}}
+
+      <div *ngFor="let i=index;let resource of tagMap.get(entry)" class="right">
         <div>
           <mat-card>
             <mat-card-header>
@@ -68,37 +118,9 @@
           </mat-card>
         </div>
       </div>
-    </div>
-
-    <div class="left">
-
-      <mat-radio-group [(ngModel)]="resourceType">
-        <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
-          {{type}}
-        </mat-radio-button>
-      </mat-radio-group>
-
-      <br/>
-
-      <mat-form-field>
-        <input matInput placeholder="resource link or DOI" [(ngModel)]="resourceLink">
-      </mat-form-field>
-
-      <br/>
-
-      <mat-form-field>
-        <mat-select placeholder="tag" [(value)]="resourceTag">
-          <mat-option *ngFor="let tag of tags" [value]="tag">
-            {{ tag }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <div style="margin-top: 2em">
-        <button mat-button (click)="addResource()">ADD Resource</button>
-      </div>
 
     </div>
+
 
   </div>
 

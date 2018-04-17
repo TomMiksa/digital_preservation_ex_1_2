@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {AdministrativeData} from "../model/administrativeData";
 import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
 import {DOIResource, GitHubResource, Resources} from "../model/resources";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-dmp',
@@ -22,6 +23,7 @@ export class DmpComponent implements OnInit {
   resourceLink: string;
   resourceTag: string;
   tags = ['input', 'software', 'data'];
+  preservationDuration = [5, 10, 20, 50];
   resourceType: string;
   name: string;
   orcid: string;
@@ -30,13 +32,15 @@ export class DmpComponent implements OnInit {
 
   resourceTypes = ['GitHub', 'DOI'];
   resources: Resources[] = [];
+  tagMap = new Map<string, Resources[]>();
+
+  resourceForm: FormGroup;
 
   constructor(
     private authService: AuthService,
     private http: HttpClient,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
-  ) {
+    private domSanitizer: DomSanitizer) {
     this.matIconRegistry.addSvgIcon(
       "iD",
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/iD_icon.svg")
@@ -58,6 +62,14 @@ export class DmpComponent implements OnInit {
         console.error(err);
       }
     );
+
+    this.resourceForm = new FormGroup({
+      resType: new FormControl('', Validators.required),
+      resourceLink: new FormControl('', Validators.required),
+      resourceTag: new FormControl('', Validators.required)
+    })
+
+
   }
 
 
@@ -65,13 +77,27 @@ export class DmpComponent implements OnInit {
     this.authService.logout();
   }
 
+  onSubmit() {
+    this.addResource();
+  }
+
   addResource() {
-    const res: Resources = {
+    let res: Resources = {
       resourceType: this.resourceType,
       license: '',
       errorMsg: '',
       tag: this.resourceTag,
     };
+
+    let taggedResources = this.tagMap.get(res.tag);
+    if (taggedResources === undefined) {
+      taggedResources = [];
+    }
+
+
+    taggedResources.push(res);
+
+    this.tagMap.set(res.tag, taggedResources);
 
     if (this.resourceType === 'GitHub') {
       this.fetchGitHub(res);
@@ -79,8 +105,8 @@ export class DmpComponent implements OnInit {
       this.fetchDOIMetadata(res);
     }
 
-    this.resources.push(res);
-    this.resources.sort((a, b) => a.tag.localeCompare(b.tag))
+    // this.resources.push(res);
+    // this.resources.sort((a, b) => a.tag.localeCompare(b.tag))
 
   }
 
@@ -127,6 +153,9 @@ export class DmpComponent implements OnInit {
 
     const tObj = fastXmlParser.getTraversalObj(data, options);
     const jsonObj = fastXmlParser.convertToJson(tObj, options);
+
+    console.log(jsonObj);
+
     const metadata = jsonObj['OAI-PMH']['GetRecord']['record']['metadata']['oai_dc:dc'];
     resource.creators = metadata['dc:creator'];
     resource.date = metadata['dc:date'];
@@ -134,6 +163,11 @@ export class DmpComponent implements OnInit {
     resource.description = metadata['dc:description'];
     resource.zenodo_identifier = metadata['dc:identifier'][0];
     resource.license = metadata['dc:rights'][1]
+    /*
+     * TODO rights can be only one long if github repo
+     * link from zenodo to github is in dc:relation
+     * check that then parse github with better rights info as well
+     */
 
   }
 
