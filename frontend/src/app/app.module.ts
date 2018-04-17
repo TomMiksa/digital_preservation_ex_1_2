@@ -9,9 +9,9 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from './/app-routing.module';
 import { HomeComponent } from './home/home.component';
-import {AuthService} from "./auth/auth.service";
+import {AuthService} from "./service/auth.service";
 import { AuthComponent } from './auth/auth.component';
-import {AuthGuard} from "./auth/auth.guard";
+import {AuthGuard} from "./guard/auth.guard";
 import { DmpComponent } from './dmp/dmp.component';
 
 

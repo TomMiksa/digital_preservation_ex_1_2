@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
-import {AuthService} from "../auth/auth.service";
+import {AuthService} from "../service/auth.service";
 import {HttpClient} from "@angular/common/http";
 import {AdministrativeData} from "../model/administrativeData";
 
