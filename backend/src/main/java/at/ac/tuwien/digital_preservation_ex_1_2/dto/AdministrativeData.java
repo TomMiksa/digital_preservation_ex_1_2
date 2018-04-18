@@ -21,6 +21,9 @@ public class AdministrativeData {
   @JsonProperty("country")
   private String country;
 
+  @JsonProperty("project_title")
+  private String projectTitle;
+
   public AdministrativeData() {
   }
 
@@ -62,5 +65,26 @@ public class AdministrativeData {
 
   public void setCountry(String country) {
     this.country = country;
+  }
+
+  public String getProjectTitle() {
+    return projectTitle;
+  }
+
+  public void setProjectTitle(String projectTitle) {
+    this.projectTitle = projectTitle;
+  }
+
+  @Override
+  public String toString() {
+    final StringBuffer sb = new StringBuffer("AdministrativeData{");
+    sb.append("orcid='").append(orcid).append('\'');
+    sb.append(", familyName='").append(familyName).append('\'');
+    sb.append(", givenName='").append(givenName).append('\'');
+    sb.append(", email='").append(email).append('\'');
+    sb.append(", country='").append(country).append('\'');
+    sb.append(", projectTitle='").append(projectTitle).append('\'');
+    sb.append('}');
+    return sb.toString();
   }
 }
