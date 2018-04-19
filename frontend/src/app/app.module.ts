@@ -17,6 +17,7 @@ import {GithubComponent} from './dmp/github/github.component';
 import {DoiComponent} from './dmp/doi/doi.component';
 import {AuthService} from "./service/auth.service";
 import {AuthGuard} from "./guard/auth.guard";
+import {MetadataService} from './service/metadata.service';
 
 
 @NgModule({
@@ -38,7 +39,7 @@ import {AuthGuard} from "./guard/auth.guard";
     AppRoutingModule,
     NgxChartsModule
   ],
-  providers: [AuthService, AdministrativeDataService, AuthGuard],
+  providers: [AuthService, AdministrativeDataService, AuthGuard, MetadataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -31,16 +31,9 @@
 
     <div class="left resource_data">
       <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
-        <mat-radio-group formControlName="resourceType">
-          <mat-radio-button *ngFor="let type of resourceTypes" [value]="type" style="margin-right: .5em">
-            {{type}}
-          </mat-radio-button>
-        </mat-radio-group>
-
-        <br/>
 
         <mat-form-field>
-          <input matInput placeholder="resource link or DOI" formControlName="resourceLink">
+          <input matInput placeholder="Zenodo DOI" formControlName="resourceLink">
         </mat-form-field>
 
         <br/>
@@ -58,6 +51,31 @@
         </div>
       </form>
     </div>
+
+    <!--<div class="left preservation_duration">-->
+    <!--<form  >-->
+    <!--<div>-->
+
+    <!--<div *ngFor="let tag of tags">-->
+    <!--{{tag}}-->
+    <!--<div>-->
+    <!--<mat-form-field>-->
+    <!--<mat-select placeholder="preservation duration" >-->
+    <!--<mat-option *ngFor="let duration of preservationDuration" [value]="duration"-->
+    <!--&gt;-->
+    <!--{{ duration}}-->
+    <!--</mat-option>-->
+    <!--</mat-select>-->
+    <!--</mat-form-field>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<button mat-button type="submit" >generate DMP</button>-->
+    <!--</div>-->
+
+    <!--</form>-->
+    <!--</div>-->
 
 
     <div *ngFor="let entry of tagMap.keys()" class="right">
@@ -93,7 +111,7 @@
               </div>
 
               <div style="margin-top: 2em">
-                <button mat-button (click)="removeResource(i)">REMOVE Resource</button>
+                <button mat-button (click)="removeResource(resource)">REMOVE Resource</button>
               </div>
 
             </mat-card-content>

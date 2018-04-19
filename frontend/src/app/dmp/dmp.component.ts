@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {DomSanitizer} from "@angular/platform-browser";
 import {MatIconRegistry} from "@angular/material";
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpErrorResponse} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {AdministrativeDataService} from "../service/administrative-data.service";
-import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
-import {DOIResource, GitHubResource, Resources} from "../model/resources";
+import {Resources} from "../model/resources";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AdministrativeData} from "../model/administrative-data";
 import {AuthService} from "../service/auth.service";
+import {MetadataService} from "../service/metadata.service";
 
 
 @Component({
@@ -18,30 +18,26 @@ import {AuthService} from "../service/auth.service";
 })
 export class DmpComponent implements OnInit {
 
+
   name: string;
   orcid: string;
   administrativeData: AdministrativeData;
 
-  resourceLink: string;
-  resourceTag: string;
   tags = ['input', 'software', 'data'];
   preservationDuration = [5, 10, 20, 50];
-  resourceType: string;
 
-  resourceTypes = ['GitHub', 'DOI'];
-  resources: Resources[] = [];
   tagMap = new Map<string, Resources[]>();
 
   resourceForm: FormGroup;
 
   constructor(
-    private http: HttpClient,
     private authService: AuthService,
     private administrativeDataService: AdministrativeDataService,
     private router: Router,
     private matIconRegistry: MatIconRegistry,
-    private domSanitizer: DomSanitizer
-  ){
+    private domSanitizer: DomSanitizer,
+    private metadataService: MetadataService
+  ) {
     this.matIconRegistry.addSvgIcon(
       "iD",
       this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/iD_icon.svg")
@@ -66,7 +62,6 @@ export class DmpComponent implements OnInit {
     );
 
     this.resourceForm = new FormGroup({
-      resourceType: new FormControl('', Validators.required),
       resourceLink: new FormControl('', Validators.required),
       resourceTag: new FormControl('', Validators.required)
     })
@@ -99,7 +94,7 @@ export class DmpComponent implements OnInit {
   addResource() {
     const form = this.resourceForm.value;
     let res: Resources = {
-      resourceType: form.resourceType,
+      resourceType: '',
       license: '',
       errorMsg: '',
       tag: form.resourceTag,
@@ -110,151 +105,27 @@ export class DmpComponent implements OnInit {
       taggedResources = [];
     }
 
-
     taggedResources.push(res);
-
     this.tagMap.set(res.tag, taggedResources);
-
-    if (form.resourceType === 'GitHub') {
-      this.fetchGitHub(res);
-    } else {
-      this.fetchDOIMetadata(res);
-    }
-
-    // this.resources.push(res);
-    // this.resources.sort((a, b) => a.tag.localeCompare(b.tag))
+    this.metadataService.fetchMetadata(res, form.resourceLink);
+    this.resourceForm.reset();
 
   }
 
-  removeResource(index: number) {
-    this.resources = [
-      ...this.resources.slice(0, index),
-      ...this.resources.slice(index + 1)
+  removeResource(resource) {
+
+    const taggedResources = this.tagMap.get(resource.tag);
+    const index = taggedResources.indexOf(resource);
+    const newResource = [
+      ...taggedResources.slice(0, index),
+      ...taggedResources.slice(index + 1)
     ];
-  }
 
-
-  fetchDOIMetadata(resource) {
-
-    const form = this.resourceForm.value;
-
-
-    const doi = form.resourceLink.trim();
-    const url = 'http://localhost:8080/zenodo/'.concat(doi);
-
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'text/xml')
-      .append('Access-Control-Allow-Origin', '*');
-
-    this.http.get(url, {
-      headers: headers,
-      responseType: 'text'
-    }).subscribe(
-      data => this.parseDOIData(resource, data)
-    )
-  }
-
-  private parseDOIData(resource: DOIResource, data: string) {
-    const fastXmlParser = require('fast-xml-parser');
-    const options = {
-      attributeNamePrefix: "@_",
-      attrNodeName: "attr", //default is 'false'
-      textNodeName: "#text",
-      ignoreAttributes: true,
-      ignoreNameSpace: false,
-      allowBooleanAttributes: false,
-      parseNodeValue: true,
-      parseAttributeValue: false,
-      trimValues: true,
-      cdataTagName: "__cdata", //default is 'false'
-      cdataPositionChar: "\\c"
-    };
-
-    const tObj = fastXmlParser.getTraversalObj(data, options);
-    const jsonObj = fastXmlParser.convertToJson(tObj, options);
-
-
-    const metadata = jsonObj['OAI-PMH']['GetRecord']['record']['metadata']['oai_dc:dc'];
-    resource.creators = metadata['dc:creator'];
-    resource.date = metadata['dc:date'];
-    resource.title = metadata['dc:title'];
-    resource.description = metadata['dc:description'];
-    resource.zenodo_identifier = metadata['dc:identifier'][0];
-    resource.license = metadata['dc:rights'][1]
-    /*
-     * TODO rights can be only one long if github repo
-     * link from zenodo to github is in dc:relation
-     * check that then parse github with better rights info as well
-     */
-
-  }
-
-  fetchGitHub(resource) {
-    const form = this.resourceForm.value;
-    const repoName = form.resourceLink.trim()
-    resource.repoName = repoName
-    this.http.get<GitHubResponse>('https://api.github.com/repos/' + repoName).subscribe(
-      data => this.extractGitHubData(resource, data),
-      err => this.displayError(resource)
-    )
-  }
-
-  private extractGitHubData(resource: GitHubResource, data: GitHubResponse) {
-    this.removeError(resource);
-    if (data.license !== null) {
-      resource.license = data.license.name;
-      this.getLicense(resource, data);
+    if (newResource.length !== 0) {
+      this.tagMap.set(resource.tag, newResource)
+    } else {
+      this.tagMap.delete(resource.tag);
     }
-
-    resource.owner = data.owner;
-    resource.size = data.size;
-
-    this.getLanguages(resource, data);
-    this.getContributors(resource, data);
   }
-
-  private getContributors(resource: GitHubResource, data: GitHubResponse) {
-    this.http.get<GitHubUser[]>(data.contributors_url).subscribe(
-      data => resource.contributors = data
-    );
-  }
-
-  private getLicense(resource: GitHubResource, data: GitHubResponse) {
-    this.http.get<GitHubLicense>(data.license.url).subscribe(
-      data => resource.licence_url = data.html_url
-    );
-  }
-
-  private getLanguages(resource: GitHubResource, data: GitHubResponse) {
-    this.http.get(data.languages_url).subscribe(
-      data => this.extractLanguages(resource, data)
-    );
-  }
-
-  private extractLanguages(resource: GitHubResource, data) {
-    const languages: GitHubLanguageEntry[] = [];
-    const res_lang = [];
-    for (let key in data) {
-      res_lang.push({name: key, value: data[key]})
-
-      const language: GitHubLanguageEntry = {
-        name: key,
-        loc: data[key]
-      };
-      languages.push(language);
-    }
-    resource.languages = languages;
-    resource.language_chart = res_lang
-    // console.log("language chart: " + resource.language_chart)
-  }
-
-  private displayError(resource: Resources) {
-    resource.errorMsg = "there was an error";
-  }
-
-  private removeError(resource: Resources) {
-    resource.errorMsg = '';
-  }
-
 
 }
