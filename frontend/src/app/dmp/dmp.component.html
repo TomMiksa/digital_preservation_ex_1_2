@@ -30,7 +30,7 @@
       </mat-card>
     </div>
 
-    <div class="left resource_data">
+    <div class="left resource_data" style="padding-top: 2em; padding-left: 0.5em;">
       <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
 
         <mat-form-field>
@@ -47,7 +47,7 @@
           </mat-select>
         </mat-form-field>
 
-        <div style="margin-top: 2em">
+        <div style="margin-top: 1em">
           <button mat-button [disabled]="resourceForm.invalid">ADD Resource</button>
         </div>
       </form>
