@@ -5,12 +5,16 @@
 
       <span class="toolbar-spacer"></span>
 
-      <button mat-button (click)="logout()"><mat-icon class="iD-icon" svgIcon="iD"></mat-icon>{{name}}</button>
+      <button mat-button (click)="logout()">
+        <mat-icon class="iD-icon" svgIcon="iD"></mat-icon>
+        {{name}}
+      </button>
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div>
-    <div class="left">
+
+  <div class="container">
+    <div class="left admin_data">
       <mat-card>
         <mat-card-header>
           <mat-card-title><h2>Administrative data</h2></mat-card-title>
@@ -25,5 +29,101 @@
         </mat-card-content>
       </mat-card>
     </div>
+
+    <div class="left resource_data" style="padding-top: 2em; padding-left: 0.5em;">
+      <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field>
+          <input matInput placeholder="Zenodo DOI" formControlName="resourceLink">
+        </mat-form-field>
+
+        <br/>
+
+        <mat-form-field>
+          <mat-select placeholder="tag" formControlName="resourceTag">
+            <mat-option *ngFor="let tag of tags" [value]="tag">
+              {{ tag }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <div style="margin-top: 1em">
+          <button mat-button [disabled]="resourceForm.invalid">ADD Resource</button>
+        </div>
+      </form>
+    </div>
+
+    <!--<div class="left preservation_duration">-->
+    <!--<form  >-->
+    <!--<div>-->
+
+    <!--<div *ngFor="let tag of tags">-->
+    <!--{{tag}}-->
+    <!--<div>-->
+    <!--<mat-form-field>-->
+    <!--<mat-select placeholder="preservation duration" >-->
+    <!--<mat-option *ngFor="let duration of preservationDuration" [value]="duration"-->
+    <!--&gt;-->
+    <!--{{ duration}}-->
+    <!--</mat-option>-->
+    <!--</mat-select>-->
+    <!--</mat-form-field>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div>-->
+    <!--<button mat-button type="submit" >generate DMP</button>-->
+    <!--</div>-->
+
+    <!--</form>-->
+    <!--</div>-->
+
+
+    <div *ngFor="let entry of tagMap.keys()" class="right">
+      Category: {{entry}}
+
+      <div *ngFor="let i=index;let resource of tagMap.get(entry)" class="right">
+        <div>
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title><h2>Resource</h2></mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+
+
+              <div style="margin-top: 2em">
+                <div *ngIf="resource.resourceType == 'GitHub'">
+                  <div *ngIf="resource.errorMsg === ''">
+                    <div>
+                      <app-github [resource]="resource"></app-github>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="resource.resourceType == 'DOI'">
+                  <div>
+                    <app-doi [resource]="resource"></app-doi>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="resource.errorMsg !== ''">
+                <div>
+                  {{resource.errorMsg}}
+                </div>
+              </div>
+
+              <div style="margin-top: 2em">
+                <button mat-button (click)="removeResource(resource)">REMOVE Resource</button>
+              </div>
+
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+
+    </div>
+
+
   </div>
+
+
 </div>
