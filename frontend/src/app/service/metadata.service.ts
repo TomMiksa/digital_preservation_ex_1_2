@@ -2,35 +2,42 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
 import {GitHubResource, Resources} from "../model/resources";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class MetadataService {
+
+  private baseUrl = 'http://localhost:8080/zenodo/';
+  private headers = new HttpHeaders()
+    .set('Content-Type', 'text/xml')
+    .append('Access-Control-Allow-Origin', '*');
 
   constructor(private http: HttpClient) {
   }
 
 
-  public fetchMetadata(resource, doi) {
-    const url = 'http://localhost:8080/zenodo/'.concat(doi);
+  public checkDoi(doi): Observable<String> {
+    const url = this.baseUrl.concat(doi);
 
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'text/xml')
-      .append('Access-Control-Allow-Origin', '*');
+    return this.http.get(url, {
+      headers: this.headers,
+      responseType: 'text'
+    });
+  }
+
+  public fetchMetadata(resource, doi) {
+    const url = this.baseUrl.concat(doi);
+
 
     this.http.get(url, {
-      headers: headers,
+      headers: this.headers,
       responseType: 'text'
     }).subscribe(
       data => this.parseDOIData(resource, data)
     )
   }
 
-  fetchGitHub(resource,) {
-    this.http.get<GitHubResponse>('https://api.github.com/repos/' + resource.repoName).subscribe(
-      data => this.extractGitHubData(resource, data),
-      err => this.displayError(resource)
-    )
-  }
+
 
   private parseDOIData(resource, data: string) {
 
@@ -51,7 +58,6 @@ export class MetadataService {
 
     const tObj = fastXmlParser.getTraversalObj(data, options);
     const jsonObj = fastXmlParser.convertToJson(tObj, options);
-
     const metadata = jsonObj['OAI-PMH']['GetRecord']['record']['metadata']['oai_dc:dc'];
     const relations = metadata['dc:relation'];
     const firstRelation = relations[0];
@@ -72,6 +78,12 @@ export class MetadataService {
       resource.description = metadata['dc:description'];
       resource.zenodo_identifier = metadata['dc:identifier'][0];
     }
+  }
+
+  fetchGitHub(resource) {
+    this.http.get<GitHubResponse>('https://api.github.com/repos/' + resource.repoName).subscribe(
+      data => this.extractGitHubData(resource, data)
+    )
   }
 
   private extractGitHubData(resource: GitHubResource, data: GitHubResponse) {
@@ -108,10 +120,7 @@ export class MetadataService {
 
   private extractLanguages(resource: GitHubResource, data) {
     const languages: GitHubLanguageEntry[] = [];
-    const res_lang = [];
     for (let key in data) {
-      res_lang.push({name: key, value: data[key]})
-
       const language: GitHubLanguageEntry = {
         name: key,
         loc: data[key]
@@ -119,8 +128,6 @@ export class MetadataService {
       languages.push(language);
     }
     resource.languages = languages;
-    resource.language_chart = res_lang
-    // console.log("language chart: " + resource.language_chart)
   }
 
 
