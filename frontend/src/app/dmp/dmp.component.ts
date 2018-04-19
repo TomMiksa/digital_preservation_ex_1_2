@@ -34,6 +34,7 @@ export class DmpComponent implements OnInit {
   resourceForm: FormGroup;
   tagArray: FormArray;
   controlMetadata: Array<FormControlMetadata> = [];
+  existingControlTags = [];
   private durations = [
     new Item('5', 5),
     new Item('10', 10),
@@ -82,10 +83,9 @@ export class DmpComponent implements OnInit {
 
 
     this.preservationDurationForm = this.formBuilder.group({
-      tagArray: this.formBuilder.array([{}])
+      tagArray: this.formBuilder.array([])
     });
 
-    this.refreshPreservationDurationForm();
   }
 
 
@@ -124,23 +124,25 @@ export class DmpComponent implements OnInit {
 
   private handleDoiExists(doi) {
     const form = this.resourceForm.value;
+    const tag = form.resourceTag;
     let res: Resources = {
       resourceType: '',
       license: '',
       errorMsg: '',
-      tag: form.resourceTag,
+      tag: tag,
     };
 
-    this.preservationDurationMap.set(form.resourceTag, 0);
+    this.preservationDurationMap.set(tag, 0);
 
-    let taggedResources = this.tagMap.get(res.tag);
+    let taggedResources = this.tagMap.get(tag);
     if (taggedResources === undefined) {
       taggedResources = [];
     }
 
     taggedResources.push(res);
 
-    this.tagMap.set(res.tag, taggedResources);
+    this.tagMap.set(tag, taggedResources);
+    this.refreshPreservationDurationForm(tag);
 
     this.metadataService.fetchMetadata(res, doi);
   }
@@ -161,20 +163,19 @@ export class DmpComponent implements OnInit {
     }
   }
 
-  private refreshPreservationDurationForm() {
+  private refreshPreservationDurationForm(tag) {
 
     this.tagArray = this.preservationDurationForm.get('tagArray') as FormArray;
-    this.tagArray.removeAt(0);
-
-    for (let tag of this.tags) {
+    if (!this.existingControlTags.includes(tag)) {
       const control = new FormControlMetadata(tag, this.durations);
       const group = this.formBuilder.group({});
-      this.controlMetadata.push(control);
-      let associateControl = this.formBuilder.control('', Validators.required);
-      group.addControl(tag, associateControl);
-      this.tagArray.push(group);
+      if (!this.controlMetadata.includes(control)) {
+        this.controlMetadata.push(control);
+        let associateControl = this.formBuilder.control('', Validators.required);
+        group.addControl(tag, associateControl);
+        this.tagArray.push(group);
+      }
+      this.existingControlTags.push(tag);
     }
-
-
   }
 }
