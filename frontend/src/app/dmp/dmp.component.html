@@ -47,36 +47,38 @@
           </mat-select>
         </mat-form-field>
 
+        <div style="color: red">
+          {{error}}
+        </div>
+
         <div style="margin-top: 1em">
           <button mat-button [disabled]="resourceForm.invalid">ADD Resource</button>
         </div>
       </form>
     </div>
 
-    <!--<div class="left preservation_duration">-->
-    <!--<form  >-->
-    <!--<div>-->
+    <div class="left preservation_duration">
 
-    <!--<div *ngFor="let tag of tags">-->
-    <!--{{tag}}-->
-    <!--<div>-->
-    <!--<mat-form-field>-->
-    <!--<mat-select placeholder="preservation duration" >-->
-    <!--<mat-option *ngFor="let duration of preservationDuration" [value]="duration"-->
-    <!--&gt;-->
-    <!--{{ duration}}-->
-    <!--</mat-option>-->
-    <!--</mat-select>-->
-    <!--</mat-form-field>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div>-->
-    <!--<button mat-button type="submit" >generate DMP</button>-->
-    <!--</div>-->
-
-    <!--</form>-->
-    <!--</div>-->
+      <form [formGroup]="preservationDurationForm">
+        <div formArrayName="tagArray">
+          <div *ngFor="let item of controlMetadata; let i = index">
+            <div [formGroupName]="i">
+              {{item.label}}
+              <mat-form-field>
+                <mat-select placeholder="preservation duration" [formControlName]="item.label">
+                  <mat-option *ngFor="let item of item.data" [value]="item.value">
+                    {{item.text}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 1em">
+          <button mat-button [disabled]="preservationDurationForm.invalid">generate DMP</button>
+        </div>
+      </form>
+    </div>
 
 
     <div *ngFor="let entry of tagMap.keys()" class="right">
