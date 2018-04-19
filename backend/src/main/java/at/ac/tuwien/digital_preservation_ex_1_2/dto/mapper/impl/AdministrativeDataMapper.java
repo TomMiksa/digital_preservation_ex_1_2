@@ -2,17 +2,25 @@ package at.ac.tuwien.digital_preservation_ex_1_2.dto.mapper.impl;
 
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.AdministrativeData;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.mapper.IDTOMapper;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Activities;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Address;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Addresses;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Country;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.CreatedDate;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.EMail;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.EMails;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.FamilyName;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.GivenName;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.GroupedWorks;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Name;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.OrcidIdentifier;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.OrcidRecord;
 import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Person;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Title;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Titles;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Work;
+import at.ac.tuwien.digital_preservation_ex_1_2.dto.orcid.Works;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +36,7 @@ public class AdministrativeDataMapper implements IDTOMapper<AdministrativeData, 
     administrativeData.setGivenName(getGivenName(dto));
     administrativeData.setEmail(getEmail(dto));
     administrativeData.setCountry(getCountry(dto));
+    administrativeData.setProjectTitle(getTitle(dto));
 
     return administrativeData;
   }
@@ -143,6 +152,63 @@ public class AdministrativeDataMapper implements IDTOMapper<AdministrativeData, 
     }
 
     return country.getValue();
+  }
+
+  private String getTitle(OrcidRecord dto){
+
+    Activities activities = dto.getActivities();
+    if(activities == null){
+      return null;
+    }
+
+    Works works = activities.getWorks();
+    if(works == null){
+      return null;
+    }
+
+    List<GroupedWorks> groupedWorksList = works.getGroupedWorksList();
+    if (groupedWorksList == null || groupedWorksList.isEmpty()) {
+      return null;
+    }
+
+    Work latestWork = null;
+    for(GroupedWorks groupedWorks: groupedWorksList){
+
+      List<Work> workList = groupedWorks.getWorkList();
+      if (workList == null || workList.isEmpty()) {
+        return null;
+      }
+
+      Work work = workList.get(0);
+      if(latestWork == null) {
+        latestWork = work;
+      }
+
+      CreatedDate workDate = work.getCreatedDate();
+      CreatedDate latestWorkDate = latestWork.getCreatedDate();
+      if(workDate == null || latestWorkDate == null){
+        return null;
+      }
+      if(workDate.getValue() > latestWorkDate.getValue()){
+        latestWork = work;
+      }
+    }
+
+    if(latestWork == null){
+      return null;
+    }
+
+    Titles titles = latestWork.getTitles();
+    if(titles == null){
+      return null;
+    }
+
+    Title title = titles.getTitle();
+    if(title == null){
+      return null;
+    }
+
+    return title.getValue();
   }
 
 }

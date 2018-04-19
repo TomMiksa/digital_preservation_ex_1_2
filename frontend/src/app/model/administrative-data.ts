@@ -4,4 +4,5 @@ export interface AdministrativeData {
   given_name: string;
   email: string;
   country: string;
+  project_title: string;
 }

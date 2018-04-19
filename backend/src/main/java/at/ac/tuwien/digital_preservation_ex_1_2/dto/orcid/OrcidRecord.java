@@ -12,6 +12,9 @@ public class OrcidRecord {
   @JsonProperty("person")
   private Person person;
 
+  @JsonProperty("activities-summary")
+  private Activities activities;
+
   public OrcidRecord() {
   }
 
@@ -32,4 +35,11 @@ public class OrcidRecord {
     this.person = person;
   }
 
+  public Activities getActivities() {
+    return activities;
+  }
+
+  public void setActivities(Activities activities) {
+    this.activities = activities;
+  }
 }
