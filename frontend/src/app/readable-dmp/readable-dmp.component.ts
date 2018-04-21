@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AdministrativeData} from "../model/administrative-data";
+import {Resources} from "../model/resources";
 
 @Component({
   selector: 'app-readable-dmp',
@@ -10,6 +11,9 @@ export class ReadableDmpComponent implements OnInit {
 
   date: Date;
   administrativeData: AdministrativeData;
+  tags: string[];
+  preservationDurationMap: Map<string, number>;
+  tagMap: Map<string, Resources[]>;
 
   constructor() { }
 
@@ -22,6 +26,12 @@ export class ReadableDmpComponent implements OnInit {
       country: "AT",
       project_title: "Project X"
     };
+    this.tags = ['input', 'software', 'data'];
+    this.preservationDurationMap = new Map<string, number>();
+    this.preservationDurationMap.set(this.tags[0], 20);
+    this.preservationDurationMap.set(this.tags[1], 5);
+    this.preservationDurationMap.set(this.tags[2], 10);
+    this.tagMap = new Map<string, Resources[]>();
   }
 
 }

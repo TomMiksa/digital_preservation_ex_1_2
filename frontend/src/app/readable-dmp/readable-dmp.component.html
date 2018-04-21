@@ -72,7 +72,10 @@
             <p class="question">
               <b>What documentation will accompany the data?</b>
             </p>
-            
+            <p class="answer">
+              Each resource contains a short description on Zenodo where the DOI's got created.
+              There is no special format for the description.
+            </p>
           </mat-card-content>
         </mat-card>
       </div>
@@ -86,7 +89,11 @@
             <p class="question">
               <b>What metadata will accompany the data?</b>
             </p>
-
+            <p class="answer">
+              For resources other then software the metadata available from Zenodo will be provided.
+              If the resources contain software and the software is hosted on a public Github
+              repository, then metadata from Github will be used.
+            </p>
           </mat-card-content>
         </mat-card>
       </div>
@@ -133,7 +140,10 @@
             <p class="question">
               <b>What is the long-term preservation plan for the dataset?</b>
             </p>
-
+            <p class="answer" *ngFor="let tag of tags">
+              For {{tag}} resources a preservation duration of {{preservationDurationMap.get(tag)}}
+              years is planned.
+            </p>
           </mat-card-content>
         </mat-card>
       </div>
@@ -162,7 +172,8 @@
               <b>Who will be responsible for data management?</b>
             </p>
             <p class="answer">
-              The author NAME of the DMP is responsible for the implementation of the
+              The author of the DMP ({{administrativeData.family_name}}
+              {{administrativeData.given_name}}) is responsible for the implementation of the
               DMP and is also responsible for ensuring that the DMP is reviewed and revised.
             </p>
             <p class="question">
