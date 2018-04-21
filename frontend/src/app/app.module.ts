@@ -18,6 +18,7 @@ import {DoiComponent} from './dmp/doi/doi.component';
 import {AuthService} from "./service/auth.service";
 import {AuthGuard} from "./guard/auth.guard";
 import {MetadataService} from './service/metadata.service';
+import { ReadableDmpComponent } from './readable-dmp/readable-dmp.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {MetadataService} from './service/metadata.service';
     AuthComponent,
     DmpComponent,
     GithubComponent,
-    DoiComponent
+    DoiComponent,
+    ReadableDmpComponent
   ],
   imports: [
     BrowserModule,
