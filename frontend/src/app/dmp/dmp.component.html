@@ -1,10 +1,9 @@
 <div>
+
   <mat-toolbar color="primary">
     <mat-toolbar-row>
       <span>Digital Preservation Exercise 1.2</span>
-
       <span class="toolbar-spacer"></span>
-
       <button mat-button (click)="logout()">
         <mat-icon class="iD-icon" svgIcon="iD"></mat-icon>
         {{name}}
@@ -12,8 +11,8 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-
   <div class="container">
+
     <div class="left admin_data">
       <mat-card>
         <mat-card-header>
@@ -30,60 +29,68 @@
       </mat-card>
     </div>
 
-    <div class="left resource_data" style="padding-top: 2em; padding-left: 0.5em;">
-      <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
-
-        <mat-form-field>
-          <input matInput placeholder="Zenodo DOI" formControlName="resourceLink">
-        </mat-form-field>
-
-        <br/>
-
-        <mat-form-field>
-          <mat-select placeholder="tag" formControlName="resourceTag">
-            <mat-option *ngFor="let tag of tags" [value]="tag">
-              {{ tag }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <div style="color: red">
-          {{error}}
-        </div>
-
-        <div style="margin-top: 1em">
-          <button mat-button [disabled]="resourceForm.invalid">ADD Resource</button>
-        </div>
-      </form>
+    <div class="left resource_data">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Add new resources</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="resourceForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+              <input matInput placeholder="Zenodo DOI" formControlName="resourceLink">
+            </mat-form-field>
+            <br/>
+            <mat-form-field>
+              <mat-select placeholder="tag" formControlName="resourceTag">
+                <mat-option *ngFor="let tag of tags" [value]="tag">
+                  {{ tag }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div style="color: red">
+              {{error}}
+            </div>
+            <div style="margin-top: 1em">
+              <button mat-button [disabled]="resourceForm.invalid">Add</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <div class="left preservation_duration">
-
-      <form [formGroup]="preservationDurationForm">
-        <div formArrayName="tagArray">
-          <div *ngFor="let item of controlMetadata; let i = index">
-            <div [formGroupName]="i">
-              {{item.label}}
-              <mat-form-field>
-                <mat-select placeholder="preservation duration" [formControlName]="item.label">
-                  <mat-option *ngFor="let item of item.data" [value]="item.value">
-                    {{item.text}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title><h2>Generate a DMP</h2></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="preservationDurationForm">
+            <div formArrayName="tagArray">
+              <div *ngFor="let item of controlMetadata; let i = index">
+                <div [formGroupName]="i">
+                  {{item.label}}:
+                  <mat-form-field>
+                    <mat-select placeholder="preservation duration" [formControlName]="item.label">
+                      <mat-option *ngFor="let item of item.data" [value]="item.value">
+                        {{item.text}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div style="margin-top: 1em">
-          <button mat-button [disabled]="preservationDurationForm.invalid">generate DMP</button>
-        </div>
-      </form>
+            <div style="margin-top: 1em">
+              <button mat-button [disabled]="preservationDurationForm.invalid">Generate</button>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-
-    <div *ngFor="let entry of tagMap.keys()" class="right">
-      Category: {{entry}}
-
+    <div *ngFor="let entry of getTagMapKeys()" class="right">
+      <div class="category">
+        {{entry}}
+      </div>
       <div *ngFor="let i=index;let resource of tagMap.get(entry)" class="right">
         <div>
           <mat-card>
@@ -91,8 +98,6 @@
               <mat-card-title><h2>Resource</h2></mat-card-title>
             </mat-card-header>
             <mat-card-content>
-
-
               <div style="margin-top: 2em">
                 <div *ngIf="resource.resourceType == 'GitHub'">
                   <div *ngIf="resource.errorMsg === ''">
@@ -101,7 +106,7 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="resource.resourceType == 'DOI'">
+                <div class="test" *ngIf="resource.resourceType == 'DOI'">
                   <div>
                     <app-doi [resource]="resource"></app-doi>
                   </div>
@@ -112,20 +117,14 @@
                   {{resource.errorMsg}}
                 </div>
               </div>
-
               <div style="margin-top: 2em">
-                <button mat-button (click)="removeResource(resource)">REMOVE Resource</button>
+                <button mat-button (click)="removeResource(resource)">Remove</button>
               </div>
-
             </mat-card-content>
           </mat-card>
         </div>
       </div>
-
     </div>
 
-
   </div>
-
-
 </div>

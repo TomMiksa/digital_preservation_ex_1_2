@@ -1,22 +1,20 @@
-creators:
-<p *ngFor="let creator of resource.creators">
-  {{creator}}
-</p>
-
 <p>
-  date:
+  <b>Creator:</b>
+  {{resource.creator}}
+</p>
+<p>
+  <b>Date:</b>
   {{resource.date}}
 </p>
-
 <p>
-  title:
+  <b>Title:</b>
   <a [href]="resource.zenodo_identifier" target="_blank">{{resource.title}}</a>
 </p>
 <p>
-  description:
+  <b>Description:</b>
   {{resource.description}}
 </p>
 <p>
-  licence:
+  <b>License:</b>
   <a [href]="resource.license" target="_blank"> {{resource.license}}</a>
 </p>

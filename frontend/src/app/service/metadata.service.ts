@@ -1,46 +1,30 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
-import {GitHubResource, Resources} from "../model/resources";
-import {Observable} from "rxjs/Observable";
+import {DOIResource, GitHubResource, Resources} from "../model/resources";
 
 @Injectable()
 export class MetadataService {
 
   private baseUrl = 'http://localhost:8080/zenodo/';
   private headers = new HttpHeaders()
-    .set('Content-Type', 'text/xml')
-    .append('Access-Control-Allow-Origin', '*');
+  .set('Content-Type', 'text/xml')
+  .append('Access-Control-Allow-Origin', '*');
 
   constructor(private http: HttpClient) {
   }
 
-
-  public checkDoi(doi): Observable<String> {
+  public checkDoi(doi) {
     const url = this.baseUrl.concat(doi);
-
-    return this.http.get(url, {
-      headers: this.headers,
-      responseType: 'text'
-    });
+    return this.http.get(url, {headers: this.headers, responseType: 'text'});
   }
 
-  public fetchMetadata(resource, doi) {
+  public fetchMetadata(doi) {
     const url = this.baseUrl.concat(doi);
-
-
-    this.http.get(url, {
-      headers: this.headers,
-      responseType: 'text'
-    }).subscribe(
-      data => this.parseDOIData(resource, data)
-    )
+    return this.http.get(url, {headers: this.headers, responseType: 'text'});
   }
 
-
-
-  private parseDOIData(resource, data: string) {
-
+  public parseDOIData(resource, data: string) {
     const fastXmlParser = require('fast-xml-parser');
     const options = {
       attributeNamePrefix: "@_",
@@ -72,7 +56,7 @@ export class MetadataService {
     } else {
       resource.resourceType = 'DOI';
       resource.license = metadata['dc:rights'][1]
-      resource.creators = metadata['dc:creator'];
+      resource.creator = metadata['dc:creator'];
       resource.date = metadata['dc:date'];
       resource.title = metadata['dc:title'];
       resource.description = metadata['dc:description'];

@@ -28,7 +28,9 @@ export class DmpComponent implements OnInit {
 
   error = '';
   preservationDurationMap = new Map<string, number>()
+
   tagMap = new Map<string, Resources[]>();
+
   preservationDurationForm: FormGroup;
 
   resourceForm: FormGroup;
@@ -88,7 +90,6 @@ export class DmpComponent implements OnInit {
 
   }
 
-
   handleSuccessFullAdministrativeDataResponse(administrativeData: AdministrativeData) {
     console.log("Successfully retrieved administrative data.");
     this.administrativeData = administrativeData;
@@ -125,6 +126,7 @@ export class DmpComponent implements OnInit {
   private handleDoiExists(doi) {
     const form = this.resourceForm.value;
     const tag = form.resourceTag;
+    this.preservationDurationMap.set(tag, 0);
     let res: Resources = {
       resourceType: '',
       license: '',
@@ -132,23 +134,22 @@ export class DmpComponent implements OnInit {
       tag: tag,
     };
 
-    this.preservationDurationMap.set(tag, 0);
-
     let taggedResources = this.tagMap.get(tag);
     if (taggedResources === undefined) {
       taggedResources = [];
     }
 
-    taggedResources.push(res);
-
-    this.tagMap.set(tag, taggedResources);
-    this.refreshPreservationDurationForm(tag);
-
-    this.metadataService.fetchMetadata(res, doi);
+    this.metadataService.fetchMetadata(doi).subscribe(
+      data => {
+        this.metadataService.parseDOIData(res, data)
+        taggedResources.push(res);
+        this.tagMap.set(tag, taggedResources);
+        this.refreshPreservationDurationForm(tag);
+      }
+    );
   }
 
   removeResource(resource) {
-
     const taggedResources = this.tagMap.get(resource.tag);
     const index = taggedResources.indexOf(resource);
     const newResource = [
@@ -161,6 +162,10 @@ export class DmpComponent implements OnInit {
     } else {
       this.tagMap.delete(resource.tag);
     }
+  }
+
+  getTagMapKeys() {
+    return Array.from(this.tagMap.keys());
   }
 
   private refreshPreservationDurationForm(tag) {

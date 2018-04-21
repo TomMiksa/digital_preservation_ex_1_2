@@ -1,34 +1,38 @@
-<p>GitHub: </p>
-<p>tag: {{resource.tag}}</p>
 <p>
-  {{resource.repoName}}
+  <b>Repository: </b>{{resource.repoName}}
 </p>
 
+<p>
+  <b>License: </b>
+</p>
 <p *ngIf="resource.licence_url !== ''">
   <a [href]="resource.licence_url" target="_blank">{{resource.license}}</a>
 </p>
 <p *ngIf="resource.licence_url === ''">
   no licence information is provided
 </p>
-Repo Owner:
+
 <p *ngIf="resource.owner !== undefined ">
-  <a [href]="resource.owner.html_url" target="_blank"> {{resource.owner.login}} </a>
+  <b>Repository Owner:</b>
+  <a [href]="resource.owner.html_url" target="_blank">{{resource.owner.login}}</a>
 </p>
 
 <p>
-  <!--<img [src]="resource.owner.avatar_url">-->
+  <b>Server-side size: </b>{{resource.size}} KB
 </p>
 
-<br/>
-Server side size: {{resource.size}} KB<br/>
-Contributors:
+<p>
+  <b>Contributors: </b>
+</p>
 <p *ngFor="let contributor of resource.contributors">
   <a [href]="contributor.html_url" target="_blank"> {{contributor.login}}</a>
   <br/>
-  <!--<img [src]="contributor.avatar_url">-->
+  <img width="64" [src]="contributor.avatar_url">
 </p>
-Languages:
 
+<p>
+  <b>Languages: </b>
+</p>
 <p *ngFor="let language of resource.languages">
   {{language.name}} - {{language.loc}}
 </p>
