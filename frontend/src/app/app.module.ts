@@ -18,7 +18,10 @@ import {DoiComponent} from './dmp/doi/doi.component';
 import {AuthService} from "./service/auth.service";
 import {AuthGuard} from "./guard/auth.guard";
 import {MetadataService} from './service/metadata.service';
-import { ReadableDmpComponent } from './readable-dmp/readable-dmp.component';
+import { ReadableDmpComponent } from './generated-dmp/readable-dmp/readable-dmp.component';
+import {ReadableDmpService} from "./service/readable-dmp.service";
+import { GeneratedDmpComponent } from './generated-dmp/generated-dmp.component';
+import { ActionableDmpComponent } from './generated-dmp/actionable-dmp/actionable-dmp.component';
 
 
 @NgModule({
@@ -29,7 +32,9 @@ import { ReadableDmpComponent } from './readable-dmp/readable-dmp.component';
     DmpComponent,
     GithubComponent,
     DoiComponent,
-    ReadableDmpComponent
+    ReadableDmpComponent,
+    GeneratedDmpComponent,
+    ActionableDmpComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,13 @@ import { ReadableDmpComponent } from './readable-dmp/readable-dmp.component';
     AppRoutingModule,
     NgxChartsModule
   ],
-  providers: [AuthService, AdministrativeDataService, AuthGuard, MetadataService],
+  providers: [
+    AuthService,
+    AdministrativeDataService,
+    AuthGuard,
+    MetadataService,
+    ReadableDmpService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

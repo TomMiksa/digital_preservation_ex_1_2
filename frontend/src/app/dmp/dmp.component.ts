@@ -10,6 +10,7 @@ import {AdministrativeData} from "../model/administrative-data";
 import {AuthService} from "../service/auth.service";
 import {MetadataService} from "../service/metadata.service";
 import {FormControlMetadata, Item} from "../model/meta";
+import {ReadableDmpService} from "../service/readable-dmp.service";
 
 
 @Component({
@@ -45,6 +46,7 @@ export class DmpComponent implements OnInit {
   ];
 
   constructor(
+    private readableDmpService: ReadableDmpService,
     private authService: AuthService,
     private administrativeDataService: AdministrativeDataService,
     private router: Router,
@@ -182,5 +184,13 @@ export class DmpComponent implements OnInit {
       }
       this.existingControlTags.push(tag);
     }
+  }
+
+  generate() {
+    this.readableDmpService.saveDmp(
+      this.administrativeData,
+      this.tagMap,
+      this.preservationDurationMap);
+    this.router.navigate(["/gen"]);
   }
 }

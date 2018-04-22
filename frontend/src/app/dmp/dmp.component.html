@@ -80,7 +80,7 @@
               </div>
             </div>
             <div style="margin-top: 1em">
-              <button mat-button [disabled]="preservationDurationForm.invalid">Generate</button>
+              <button mat-button [disabled]="preservationDurationForm.invalid" (click)="generate()">Generate</button>
             </div>
           </form>
         </mat-card-content>
