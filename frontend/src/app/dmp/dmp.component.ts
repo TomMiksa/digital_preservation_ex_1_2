@@ -146,31 +146,20 @@ export class DmpComponent implements OnInit {
     }
   }
 
-  private handleDoiExists(doi) {
-    const form = this.resourceForm.value;
-    const tag = form.resourceTag;
-    this.preservationDurationMap.set(tag, 0);
-    let res: Resources = {
-      resourceType: '',
-      license: '',
-      errorMsg: '',
-      tag: tag,
-    };
-
-    let taggedResources = this.tagMap.get(tag);
-    if (taggedResources === undefined) {
-      taggedResources = [];
+  generate() {
+    const form = this.preservationDurationForm;
+    const tagArray = form.value.tagArray;
+    for (let element of tagArray) {
+      for (let key in element) {
+        this.preservationDurationMap.set(key, element[key]);
+      }
     }
 
-    this.metadataService.fetchMetadata(doi).subscribe(
-      data => {
-        this.metadataService.parseDOIData(res, data)
-        taggedResources.push(res);
-        this.tagMap.set(tag, taggedResources);
-        this.refreshPreservationDurationForm(tag);
-        this.resourceForm.reset();
-      }
-    );
+    this.readableDmpService.saveDmp(
+      this.administrativeData,
+      this.tagMap,
+      this.preservationDurationMap);
+    this.router.navigate(["/gen"]);
   }
 
   getTagMapKeys() {
@@ -200,11 +189,30 @@ export class DmpComponent implements OnInit {
     this.controlMetadata.splice(index, 1)
   }
 
-  generate() {
-    this.readableDmpService.saveDmp(
-      this.administrativeData,
-      this.tagMap,
-      this.preservationDurationMap);
-    this.router.navigate(["/gen"]);
+  private handleDoiExists(doi) {
+    const form = this.resourceForm.value;
+    const tag = form.resourceTag;
+    // this.preservationDurationMap.set(tag, 0);
+    let res: Resources = {
+      resourceType: '',
+      license: '',
+      errorMsg: '',
+      tag: tag,
+    };
+
+    let taggedResources = this.tagMap.get(tag);
+    if (taggedResources === undefined) {
+      taggedResources = [];
+    }
+
+    this.metadataService.fetchMetadata(doi).subscribe(
+      data => {
+        this.metadataService.parseDOIData(res, data)
+        taggedResources.push(res);
+        this.tagMap.set(tag, taggedResources);
+        this.refreshPreservationDurationForm(tag);
+        this.resourceForm.reset();
+      }
+    );
   }
 }
