@@ -11,10 +11,9 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div class="container">
+  <div class="data_left">
 
-    <div class="left admin_data">
-      <mat-card>
+    <mat-card class="card_styling">
         <mat-card-header>
           <mat-card-title><h2>Administrative data</h2></mat-card-title>
         </mat-card-header>
@@ -27,10 +26,9 @@
           <p><b>Project: </b>{{administrativeData?.project_title}}</p>
         </mat-card-content>
       </mat-card>
-    </div>
 
-    <div class="left resource_data">
-      <mat-card>
+
+    <mat-card class="card_styling">
         <mat-card-header>
           <mat-card-title><h2>Add new resources</h2></mat-card-title>
         </mat-card-header>
@@ -56,10 +54,8 @@
           </form>
         </mat-card-content>
       </mat-card>
-    </div>
 
-    <div class="left preservation_duration">
-      <mat-card>
+    <mat-card class="card_styling">
         <mat-card-header>
           <mat-card-title><h2>Generate a DMP</h2></mat-card-title>
         </mat-card-header>
@@ -79,14 +75,24 @@
                 </div>
               </div>
             </div>
-            <div style="margin-top: 1em">
-              <button mat-button [disabled]="preservationDurationForm.invalid" (click)="generate()">Generate</button>
+            <div *ngIf="controlMetadata.length === 0">
+              <div style="margin-top: 1em">
+                <button mat-button disabled>Generate</button>
+              </div>
             </div>
+            <div *ngIf="controlMetadata.length !== 0">
+              <div style="margin-top: 1em">
+                <button mat-button [disabled]="preservationDurationForm.invalid" (click)="generate()">Generate</button>
+              </div>
+            </div>
+
           </form>
         </mat-card-content>
       </mat-card>
-    </div>
 
+
+  </div>
+  <div class="data_right">
     <div *ngFor="let entry of getTagMapKeys()" class="right">
       <div class="category">
         {{entry}}
@@ -125,6 +131,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>

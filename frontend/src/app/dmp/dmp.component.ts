@@ -25,7 +25,11 @@ export class DmpComponent implements OnInit {
   orcid: string;
   administrativeData: AdministrativeData;
 
-  tags = ['input', 'software', 'data'];
+  tags = [
+    'input data', 'software', 'publication', 'output', 'documentation',
+    'presentation', 'intermediate data', 'poster', 'dataset', 'image',
+    'video/audio', 'lesson', 'other'
+  ];
 
   error = '';
   preservationDurationMap = new Map<string, number>()
@@ -38,6 +42,7 @@ export class DmpComponent implements OnInit {
   tagArray: FormArray;
   controlMetadata: Array<FormControlMetadata> = [];
   existingControlTags = [];
+
   private durations = [
     new Item('5', 5),
     new Item('10', 10),
@@ -125,6 +130,22 @@ export class DmpComponent implements OnInit {
 
   }
 
+  removeResource(resource) {
+    const taggedResources = this.tagMap.get(resource.tag);
+    const index = taggedResources.indexOf(resource);
+    const newResource = [
+      ...taggedResources.slice(0, index),
+      ...taggedResources.slice(index + 1)
+    ];
+
+    if (newResource.length !== 0) {
+      this.tagMap.set(resource.tag, newResource)
+    } else {
+      this.tagMap.delete(resource.tag);
+      this.removeControl(resource.tag);
+    }
+  }
+
   private handleDoiExists(doi) {
     const form = this.resourceForm.value;
     const tag = form.resourceTag;
@@ -147,23 +168,9 @@ export class DmpComponent implements OnInit {
         taggedResources.push(res);
         this.tagMap.set(tag, taggedResources);
         this.refreshPreservationDurationForm(tag);
+        this.resourceForm.reset();
       }
     );
-  }
-
-  removeResource(resource) {
-    const taggedResources = this.tagMap.get(resource.tag);
-    const index = taggedResources.indexOf(resource);
-    const newResource = [
-      ...taggedResources.slice(0, index),
-      ...taggedResources.slice(index + 1)
-    ];
-
-    if (newResource.length !== 0) {
-      this.tagMap.set(resource.tag, newResource)
-    } else {
-      this.tagMap.delete(resource.tag);
-    }
   }
 
   getTagMapKeys() {
@@ -173,17 +180,24 @@ export class DmpComponent implements OnInit {
   private refreshPreservationDurationForm(tag) {
 
     this.tagArray = this.preservationDurationForm.get('tagArray') as FormArray;
+    const control = new FormControlMetadata(tag, this.durations);
+    const group = this.formBuilder.group({});
+    let associateControl = this.formBuilder.control('', Validators.required);
+    group.addControl(tag, associateControl);
+
     if (!this.existingControlTags.includes(tag)) {
-      const control = new FormControlMetadata(tag, this.durations);
-      const group = this.formBuilder.group({});
-      if (!this.controlMetadata.includes(control)) {
-        this.controlMetadata.push(control);
-        let associateControl = this.formBuilder.control('', Validators.required);
-        group.addControl(tag, associateControl);
-        this.tagArray.push(group);
-      }
+      this.controlMetadata.push(control);
+      this.tagArray.push(group);
       this.existingControlTags.push(tag);
     }
+  }
+
+  private removeControl(tag) {
+    this.tagArray = this.preservationDurationForm.get('tagArray') as FormArray;
+    const index = this.existingControlTags.indexOf(tag);
+    this.existingControlTags.splice(index, 1);
+    this.tagArray.removeAt(index);
+    this.controlMetadata.splice(index, 1)
   }
 
   generate() {
