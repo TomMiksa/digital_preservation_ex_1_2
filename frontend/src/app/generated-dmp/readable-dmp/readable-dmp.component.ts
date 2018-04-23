@@ -41,6 +41,10 @@ export class ReadableDmpComponent implements OnInit {
     return Array.from(this.tagMap.keys());
   }
 
+  getTagMapEntries() {
+    return Array.from(this.tagMap.entries());
+  }
+
   getPreservationDurationMapKeys() {
     return Array.from(this.preservationDurationMap.keys());
   }

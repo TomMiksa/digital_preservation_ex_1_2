@@ -72,14 +72,25 @@
           <b>What type and amount of data will you generate?</b>
         </p>
         <p class="answer">
-          TODO
+          Resources of the following types are generated:
         </p>
-        <p class="question">
-          <b>How will the data be collected or created?</b>
-        </p>
-        <p class="answer">
-          TODO
-        </p>
+        <ul>
+          <div *ngFor="let key of getTagMapKeys()" class="answer">
+            <li>
+              {{key}} - {{preservationDurationMap.get(key)}} years preservation
+            </li>
+          </div>
+        </ul>
+        <div *ngFor="let key of getTagMapKeys()" class="answer">
+          <div *ngFor="let resource of tagMap.get(key)">
+            <div *ngIf="resource.resourceType == 'GitHub'">
+              <div *ngIf="resource.errorMsg === ''">
+                The server-side size of the repository {{resource.repoName}} is {{resource.size}}
+                KB.
+              </div>
+            </div>
+          </div>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>
@@ -166,7 +177,7 @@
           <div class="category">
             {{entry}}
           </div>
-          <div *ngFor="let i=index;let resource of tagMap.get(entry)">
+          <div *ngFor="let resource of tagMap.get(entry)">
             <div>
               <mat-card>
                 <mat-card-header>
@@ -181,7 +192,7 @@
                         </div>
                       </div>
                     </div>
-                    <div class="test" *ngIf="resource.resourceType == 'DOI'">
+                    <div *ngIf="resource.resourceType == 'DOI'">
                       <div>
                         <app-doi [resource]="resource"></app-doi>
                       </div>
