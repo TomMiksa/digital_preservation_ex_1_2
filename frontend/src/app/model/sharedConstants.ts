@@ -12,6 +12,7 @@ export class SharedConstants {
 
   public static responsibleManagement = 'Each resource contains a short description on Zenodo where the DOI\'s got created. There is no special format for the description.';
 
+  public static responsibleResourceImplementation = 'TODO';
 
   constructor() {
   }

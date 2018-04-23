@@ -114,7 +114,7 @@ export class ActionableDmpComponent implements OnInit {
     const dataObjects = [];
 
     this.tagMap.forEach((value: Resources[], key: string) => {
-      const dataObject = {};
+      let dataObject = {};
       const resources: Resources[] = this.tagMap.get(key);
       for (let resource of resources) {
 
@@ -170,9 +170,9 @@ export class ActionableDmpComponent implements OnInit {
     this.dmpTheme['dmp:hasDataSharing'] = {};
     this.dmpTheme['dmp:hasDataSharing']['dmp:DataSharing'] = SharedConstants.dataSharing;
 
-    const dataObject = {};
-    const licenceObjs = []
-    const licences = [];
+    let dataObject = {};
+    let licenceObjs = [];
+    let licences = [];
     this.tagMap.forEach((value: Resources[], key: string) => {
 
       const resources: Resources[] = this.tagMap.get(key);
