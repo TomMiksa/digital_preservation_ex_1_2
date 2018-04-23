@@ -1,247 +1,245 @@
 <div>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title><h2>{{administrativeData.project_title}}</h2></mat-card-title>
-      <mat-card-subtitle>A Data Management Plan created using this tool</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>1. Administrative Data</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>Title of the project:</b>
-            </p>
-            <p class="answer">
-              {{administrativeData.project_title}}
-            </p>
-            <p class="question">
-              <b>Author of this document:</b>
-            </p>
-            <table border="1" class="answer">
-              <tr>
-                <th>Name</th>
-                <th>E-Mail</th>
-                <th>Orcid-Identifier</th>
-                <th>Country</th>
-              </tr>
-              <tr>
-                <td>{{administrativeData.family_name}} {{administrativeData.given_name}}</td>
-                <td>{{administrativeData.email}}</td>
-                <td>{{administrativeData.orcid}}</td>
-                <td>{{administrativeData.country}}</td>
-              </tr>
-            </table>
-            <p class="question">
-              <b>Contact Person for the Data Management Plan:</b>
-            </p>
-            <table border="1" class="answer">
-              <tr>
-                <th>Name</th>
-                <th>E-Mail</th>
-                <th>Orcid-Identifier</th>
-                <th>Country</th>
-              </tr>
-              <tr>
-                <td>{{administrativeData.family_name}} {{administrativeData.given_name}}</td>
-                <td>{{administrativeData.email}}</td>
-                <td>{{administrativeData.orcid}}</td>
-                <td>{{administrativeData.country}}</td>
-              </tr>
-            </table>
-            <p class="question">
-              <b>Version of the document and date:</b>
-            </p>
-            <p class="answer">
-              Version: 1.0.0<br>
-              Date: {{date | date:'yyyy-MM-dd'}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>2. Data Collection</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>What type and amount of data will you generate?</b>
-            </p>
-            <p class="answer">
-              TODO
-            </p>
-            <p class="question">
-              <b>How will the data be collected or created?</b>
-            </p>
-            <p class="answer">
-              TODO
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
 
 
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>3. Documentation</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>What documentation will accompany the data?</b>
-            </p>
-            <p class="answer">
-              {{documentation}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>4. Metadata</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>What metadata will accompany the data?</b>
-            </p>
-            <p class="answer">
-              {{metaData}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>5. Ethics and Legal Compliance</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>How will you manage copyright and Intellectual Property Rights (IPR) issues?</b>
-            </p>
-            <p class="answer">
-              {{ethicsAndLegal}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>6. Storage and Backup</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>How will the data be stored and backed up during the research?</b>
-            </p>
-            <p class="answer">
-              {{storageBackup}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>7. Selection and Preservation</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>Which data should be retained, shared and/or preserved?</b>
-            </p>
-            <p class="answer">
-              The following resources are retained, shared and preserved:
-            </p>
-              <div *ngFor="let entry of getTagMapKeys()" class="answer">
-                <div class="category">
-                  {{entry}}
-                </div>
-                <div *ngFor="let i=index;let resource of tagMap.get(entry)">
-                  <div>
-                    <mat-card>
-                      <mat-card-header>
-                        <mat-card-title><h2>Resource</h2></mat-card-title>
-                      </mat-card-header>
-                      <mat-card-content>
-                        <div style="margin-top: 2em">
-                          <div *ngIf="resource.resourceType == 'GitHub'">
-                            <div *ngIf="resource.errorMsg === ''">
-                              <div>
-                                <app-github [resource]="resource"></app-github>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="test" *ngIf="resource.resourceType == 'DOI'">
-                            <div>
-                              <app-doi [resource]="resource"></app-doi>
-                            </div>
-                          </div>
+  <div>
+    <h2>{{administrativeData.project_title}}</h2>
+  </div>
+
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>1. Administrative Data</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>Title of the project:</b>
+        </p>
+        <p class="answer">
+          {{administrativeData.project_title}}
+        </p>
+        <p class="question">
+          <b>Author of this document:</b>
+        </p>
+        <table border="1" class="answer">
+          <tr>
+            <th>Name</th>
+            <th>E-Mail</th>
+            <th>Orcid-Identifier</th>
+            <th>Country</th>
+          </tr>
+          <tr>
+            <td>{{administrativeData.family_name}} {{administrativeData.given_name}}</td>
+            <td>{{administrativeData.email}}</td>
+            <td>{{administrativeData.orcid}}</td>
+            <td>{{administrativeData.country}}</td>
+          </tr>
+        </table>
+        <p class="question">
+          <b>Contact Person for the Data Management Plan:</b>
+        </p>
+        <table border="1" class="answer">
+          <tr>
+            <th>Name</th>
+            <th>E-Mail</th>
+            <th>Orcid-Identifier</th>
+            <th>Country</th>
+          </tr>
+          <tr>
+            <td>{{administrativeData.family_name}} {{administrativeData.given_name}}</td>
+            <td>{{administrativeData.email}}</td>
+            <td>{{administrativeData.orcid}}</td>
+            <td>{{administrativeData.country}}</td>
+          </tr>
+        </table>
+        <p class="question">
+          <b>Version of the document and date:</b>
+        </p>
+        <p class="answer">
+          Version: 1.0.0<br>
+          Date: {{date | date:'yyyy-MM-dd'}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>2. Data Collection</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>What type and amount of data will you generate?</b>
+        </p>
+        <p class="answer">
+          TODO
+        </p>
+        <p class="question">
+          <b>How will the data be collected or created?</b>
+        </p>
+        <p class="answer">
+          TODO
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>3. Documentation</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>What documentation will accompany the data?</b>
+        </p>
+        <p class="answer">
+          {{documentation}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>4. Metadata</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>What metadata will accompany the data?</b>
+        </p>
+        <p class="answer">
+          {{metaData}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>5. Ethics and Legal Compliance</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>How will you manage copyright and Intellectual Property Rights (IPR) issues?</b>
+        </p>
+        <p class="answer">
+          {{ethicsAndLegal}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>6. Storage and Backup</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>How will the data be stored and backed up during the research?</b>
+        </p>
+        <p class="answer">
+          {{storageBackup}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>7. Selection and Preservation</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>Which data should be retained, shared and/or preserved?</b>
+        </p>
+        <p class="answer">
+          The following resources are retained, shared and preserved:
+        </p>
+        <div *ngFor="let entry of getTagMapKeys()" class="answer">
+          <div class="category">
+            {{entry}}
+          </div>
+          <div *ngFor="let i=index;let resource of tagMap.get(entry)">
+            <div>
+              <mat-card>
+                <mat-card-header>
+                  <mat-card-title><h2>Resource</h2></mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <div style="margin-top: 2em">
+                    <div *ngIf="resource.resourceType == 'GitHub'">
+                      <div *ngIf="resource.errorMsg === ''">
+                        <div>
+                          <app-github [resource]="resource"></app-github>
                         </div>
-                      </mat-card-content>
-                    </mat-card>
+                      </div>
+                    </div>
+                    <div class="test" *ngIf="resource.resourceType == 'DOI'">
+                      <div>
+                        <app-doi [resource]="resource"></app-doi>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            <p class="question">
-              <b>What is the long-term preservation plan for the dataset?</b>
-            </p>
-            <div *ngFor="let key of getPreservationDurationMapKeys()" class="answer">
-                For {{key}} resources a preservation duration of {{preservationDurationMap.get(key)}}
-                years is planned.
+                </mat-card-content>
+              </mat-card>
             </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>8. Data Sharing</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>How will you share the data?</b>
-            </p>
-            <p class="answer">
-              {{dataSharing}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-      <div>
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title><h3>9. Responsibilities and Resources</h3></mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p class="question">
-              <b>Who will be responsible for data management?</b>
-            </p>
-            <p class="answer">
-              {{responsibleManagement}}
-            </p>
-            <p class="question">
-              <b>What resources will you require to implement your data management plan?</b>
-            </p>
-            <p class="answer">
-              {{responsibleResourceImplementation}}
-            </p>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <!-- ################################################################################ -->
-    </mat-card-content>
-  </mat-card>
+          </div>
+        </div>
+        <p class="question">
+          <b>What is the long-term preservation plan for the dataset?</b>
+        </p>
+        <div *ngFor="let key of getPreservationDurationMapKeys()" class="answer">
+          For {{key}} resources a preservation duration of {{preservationDurationMap.get(key)}}
+          years is planned.
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>8. Data Sharing</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>How will you share the data?</b>
+        </p>
+        <p class="answer">
+          {{dataSharing}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title><h3>9. Responsibilities and Resources</h3></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="question">
+          <b>Who will be responsible for data management?</b>
+        </p>
+        <p class="answer">
+          {{responsibleManagement}}
+        </p>
+        <p class="question">
+          <b>What resources will you require to implement your data management plan?</b>
+        </p>
+        <p class="answer">
+          {{responsibleResourceImplementation}}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ################################################################################ -->
+
 </div>

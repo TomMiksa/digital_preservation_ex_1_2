@@ -110,7 +110,7 @@ export class ActionableDmpComponent implements OnInit {
   }
 
   private initializeSelectionAndPreservation() {
-    this.dmpTheme['hasPreservation'] = {};
+    this.dmpTheme['dmp:hasPreservation'] = {};
     const dataObjects = [];
 
     this.tagMap.forEach((value: Resources[], key: string) => {
@@ -123,7 +123,7 @@ export class ActionableDmpComponent implements OnInit {
           dataObject['type'] = 'dmp:SourceCode';
           dataObject['foaf:accountName'] = gitHubResource.repoName;
           dataObject['dmp:Repository'] = 'https://github.com/'.concat(gitHubResource.repoName);
-          dataObject['dmp:hasDataVolume'] = gitHubResource.toString().concat(' KB (server side)');
+          dataObject['dmp:hasDataVolume'] = gitHubResource.size.toString().concat(' KB (server side)');
           dataObject['dc:creator'] = {
             'foaf:name': gitHubResource.owner.login,
             'foaf:OnlineAccount': gitHubResource.owner.html_url
@@ -169,12 +169,33 @@ export class ActionableDmpComponent implements OnInit {
   private initializeDataSharing() {
     this.dmpTheme['dmp:hasDataSharing'] = {};
     this.dmpTheme['dmp:hasDataSharing']['dmp:DataSharing'] = SharedConstants.dataSharing;
+
+    const dataObject = {};
+    const licenceObjs = []
+    const licences = [];
+    this.tagMap.forEach((value: Resources[], key: string) => {
+
+      const resources: Resources[] = this.tagMap.get(key);
+      for (let resource of resources) {
+
+
+        dataObject = {
+          'dcterms:license': resource.license
+        };
+        if (!licences.includes(resource.license)) {
+          licences.push(resource.license);
+          licenceObjs.push(dataObject)
+        }
+      }
+
+    });
+
+    this.dmpTheme['dmp:hasDataSharing']['dmp:hasIntelectualPropertyRights'] = licenceObjs;
   }
 
 
   private initializeResponsibilitiesAndResources() {
     this.dmpTheme['dmp:hasRolesAndResponsibilities'] = {};
     this.dmpTheme['dmp:hasRolesAndResponsibilities']['dmp:RolesAndReposnibilites'] = SharedConstants.responsibleManagement;
-
   }
 }

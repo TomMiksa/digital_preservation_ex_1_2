@@ -1,0 +1,5 @@
+.dmp {
+  hite-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
