@@ -19,5 +19,5 @@ export class GeneratedGuard implements CanActivate {
     this.router.navigate(['/']);
     return false;
   }
-  
+
 }
