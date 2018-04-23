@@ -97,8 +97,7 @@
               <b>What documentation will accompany the data?</b>
             </p>
             <p class="answer">
-              Each resource contains a short description on Zenodo where the DOI's got created.
-              There is no special format for the description.
+              {{documentation}}
             </p>
           </mat-card-content>
         </mat-card>
@@ -114,9 +113,7 @@
               <b>What metadata will accompany the data?</b>
             </p>
             <p class="answer">
-              For resources other then software the metadata available from Zenodo will be provided.
-              If the resources contain software and the software is hosted on a public Github
-              repository, then metadata from Github will be used.
+              {{metaData}}
             </p>
           </mat-card-content>
         </mat-card>
@@ -132,8 +129,7 @@
               <b>How will you manage copyright and Intellectual Property Rights (IPR) issues?</b>
             </p>
             <p class="answer">
-              The resources may contain license information, which can be used to manage
-              copyright and Intellectual Property Rights (IPR) issues.
+              {{ethicsAndLegal}}
             </p>
           </mat-card-content>
         </mat-card>
@@ -149,8 +145,7 @@
               <b>How will the data be stored and backed up during the research?</b>
             </p>
             <p class="answer">
-              The resources are stored online via Zenodo and Github. Zenodo is backed up by CERN and promises save keeping
-              of the data.
+              {{storageBackup}}
             </p>
           </mat-card-content>
         </mat-card>
@@ -219,9 +214,7 @@
               <b>How will you share the data?</b>
             </p>
             <p class="answer">
-              Every resource has a DOI and can be accessed via Zenodo as well as referenced or
-              cited. This also means that all of the resources used are publicly available with
-              open access. License information can be taken from the respective resource.
+              {{dataSharing}}
             </p>
           </mat-card-content>
         </mat-card>
@@ -237,14 +230,13 @@
               <b>Who will be responsible for data management?</b>
             </p>
             <p class="answer">
-              The author of the DMP is responsible for the implementation of the
-              DMP and is also responsible for ensuring that the DMP is reviewed and revised.
+              {{responsibleManagement}}
             </p>
             <p class="question">
               <b>What resources will you require to implement your data management plan?</b>
             </p>
             <p class="answer">
-              For long-term archiving of the data, the research data repository Zenodo is used.
+              {{responsibleResourceImplementation}}
             </p>
           </mat-card-content>
         </mat-card>

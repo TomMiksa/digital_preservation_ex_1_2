@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AdministrativeData} from "../../model/administrative-data";
 import {Resources} from "../../model/resources";
 import {ReadableDmpService} from "../../service/readable-dmp.service";
+import {SharedConstants} from "../../model/sharedConstants";
 
 @Component({
   selector: 'app-readable-dmp',
@@ -10,18 +11,30 @@ import {ReadableDmpService} from "../../service/readable-dmp.service";
 })
 export class ReadableDmpComponent implements OnInit {
 
+
+  documentation = SharedConstants.documentation;
+  metaData = SharedConstants.metaData;
+  ethicsAndLegal = SharedConstants.ethicsAndLegal;
+  storageBackup = SharedConstants.storageBackup;
+  dataSharing = SharedConstants.dataSharing;
+  responsibleManagement = SharedConstants.responsibleManagement;
+  responsibleResourceImplementation = SharedConstants.responsibleResourceImplementation;
+
   date: Date;
   administrativeData: AdministrativeData;
   preservationDurationMap: Map<string, number>;
   tagMap: Map<string, Resources[]>;
 
-  constructor(private readableDmpService: ReadableDmpService) { }
+  constructor(private readableDmpService: ReadableDmpService) {
+    console.log(`shared constatns ${SharedConstants.documentation}`)
+  }
 
   ngOnInit() {
     this.date = new Date();
     this.administrativeData = this.readableDmpService.administrativeData;
     this.preservationDurationMap = this.readableDmpService.preservationDurationMap;
     this.tagMap = this.readableDmpService.tagMap;
+
   }
 
   getTagMapKeys() {

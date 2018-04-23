@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Resources} from '../../model/resources';
 import {AdministrativeData} from '../../model/administrative-data';
 import {ReadableDmpService} from '../../service/readable-dmp.service';
+import {SharedConstants} from "../../model/sharedConstants";
 
 @Component({
   selector: 'app-actionable-dmp',
@@ -15,6 +16,7 @@ export class ActionableDmpComponent implements OnInit {
   preservationDurationMap: Map<string, number>;
   tagMap: Map<string, Resources[]>;
   dmp = {};
+  dmpTheme = {};
 
   constructor(private readableDmpService: ReadableDmpService) {
 
@@ -28,17 +30,9 @@ export class ActionableDmpComponent implements OnInit {
     this.initializeDMP();
   }
 
-  private initializeDMP() {
-    this.initializeContext();
-    this.initializeAdminData();
-    this.initializeDataCollection();
-    this.initializeDocumentation();
-    this.initializeMetaData();
-    this.initializeEthicsAndLegal();
-    this.initializeStorageAndBackup();
-    this.initializeSelectionAndPreservation();
-    this.initializeDataSharing();
-    this.initializeResponsibilitiesAndResources();
+  public initializeDMPStructure() {
+    this.dmp['dmp:DataManagementPlan'] = {};
+    this.dmpTheme = this.dmp['dmp:DataManagementPlan']['DataManagementPlanTheme'] = {};
   }
 
   private initializeContext() {
@@ -50,23 +44,36 @@ export class ActionableDmpComponent implements OnInit {
       'premis': 'http://www.loc.gov/premis/rdf/v1#'
     };
     this.dmp['@id'] = 'http://example.org/dmps/mydmp';
-    this.dmp['@type'] = 'dmp:DataManagementPlan';
+  }
+
+  private initializeDMP() {
+    this.initializeContext();
+    this.initializeDMPStructure();
+    this.initializeAdminData();
+    this.initializeDataCollection();
+    this.initializeDocumentation();
+    this.initializeMetaData();
+    this.initializeEthicsAndLegal();
+    this.initializeStorageAndBackup();
+    this.initializeSelectionAndPreservation();
+    this.initializeDataSharing();
+    this.initializeResponsibilitiesAndResources();
   }
 
   private initializeAdminData() {
 
-    this.dmp['dcterms:title'] = this.administrativeData.project_title;
-    this.dmp['dcterms:hasVersion'] = '1.0.0';
+    this.dmpTheme['dcterms:title'] = this.administrativeData.project_title;
+    this.dmpTheme['dcterms:hasVersion'] = '1.0.0';
 
     const day = this.date.getDate();
     const month = this.date.getMonth() + 1;
     const year = this.date.getFullYear();
     const formattedDate = `${day}-${month}-${year}`
-    this.dmp['dc:date'] = formattedDate;
+    this.dmpTheme['dc:date'] = formattedDate;
 
     const name = this.administrativeData.family_name.concat(' ').concat(this.administrativeData.given_name)
 
-    this.dmp['dc:creator'] = {
+    this.dmpTheme['dc:creator'] = {
       'foaf:name': name,
       'foaf:mbox': this.administrativeData.email,
       '@id': this.administrativeData.orcid
@@ -74,28 +81,29 @@ export class ActionableDmpComponent implements OnInit {
   }
 
   private initializeDataCollection() {
-
-    const tags = [];
-    this.tagMap.forEach((key, value) => tags.push({'dmp:dataCollection': value}))
-
-
-    this.dmp['dmp:hasDataCollection'] = tags;
+    const dataCollection = [];
+    this.tagMap.forEach((key, value) => dataCollection.push({'dmp:dataCollection': value}))
+    this.dmpTheme['dmp:hasDataCollection'] = dataCollection;
   }
 
   private initializeDocumentation() {
-    this.dmp['dmp:hasDocumentation'] = 'fixed text'
+    this.dmpTheme['dmp:hasDocumentation'] = {};
+    this.dmpTheme['dmp:hasDocumentation']['dmp:Documentation'] = SharedConstants.documentation;
   }
 
   private initializeMetaData() {
-
+    this.dmpTheme['dmp:hasMetadata'] = {};
+    this.dmpTheme['dmp:hasMetadata']['dmp:Metadata'] = SharedConstants.metaData;
   }
 
   private initializeEthicsAndLegal() {
-
+    this.dmpTheme['dmp:hasEthicsAndPrivacy'] = {};
+    this.dmpTheme['dmp:hasEthicsAndPrivacy']['dmp:EthicsAndPrivacy'] = SharedConstants.ethicsAndLegal;
   }
 
   private initializeStorageAndBackup() {
-
+    this.dmpTheme['dmp:hasStorageAndSecurity'] = {};
+    this.dmpTheme['dmp:hasStorageAndSecurity']['dmp:StorageAndSecurity'] = SharedConstants.storageBackup;
   }
 
   private initializeSelectionAndPreservation() {
@@ -103,11 +111,14 @@ export class ActionableDmpComponent implements OnInit {
   }
 
   private initializeDataSharing() {
-
+    this.dmpTheme['dmp:hasDataSharing'] = {};
+    this.dmpTheme['dmp:hasDataSharing']['dmp:DataSharing'] = SharedConstants.dataSharing;
   }
 
 
   private initializeResponsibilitiesAndResources() {
+    this.dmpTheme['dmp:hasRolesAndResponsibilities'] = {};
+    this.dmpTheme['dmp:hasRolesAndResponsibilities']['dmp:RolesAndReposnibilites'] = SharedConstants.responsibleManagement;
 
   }
 }
