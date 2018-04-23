@@ -20,11 +20,9 @@ export interface GitHubResource extends Resources {
 
 
 export interface DOIResource extends Resources {
-  doiLink: string;
   creator: string[];
   date: string;
   description: string;
-  identifier_url: string;
   title: string;
   license: string;
   zenodo_identifier: string;

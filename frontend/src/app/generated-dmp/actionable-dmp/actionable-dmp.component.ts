@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Resources} from '../../model/resources';
+import {DOIResource, GitHubResource, Resources} from '../../model/resources';
 import {AdministrativeData} from '../../model/administrative-data';
 import {ReadableDmpService} from '../../service/readable-dmp.service';
 import {SharedConstants} from "../../model/sharedConstants";
@@ -41,9 +41,9 @@ export class ActionableDmpComponent implements OnInit {
       'foaf': 'http://xmlns.com/foaf/0.1/',
       'dc': 'http://purl.org/dc/elements/1.1/',
       'dcterms': 'http://purl.org/dc/terms/',
-      'premis': 'http://www.loc.gov/premis/rdf/v1#'
+      'premis': 'http://www.loc.gov/premis/rdf/v1#',
+      '@id': 'http://example.org/dmps/mydmp'
     };
-    this.dmp['@id'] = 'http://example.org/dmps/mydmp';
   }
 
   private initializeDMP() {
@@ -82,7 +82,10 @@ export class ActionableDmpComponent implements OnInit {
 
   private initializeDataCollection() {
     const dataCollection = [];
-    this.tagMap.forEach((key, value) => dataCollection.push({'dmp:dataCollection': value}))
+    this.tagMap.forEach((key, value) => dataCollection.push({
+      'dmp:dataCollection': value,
+      'dmp:Preservation': this.preservationDurationMap.get(value).toString().concat(' years')
+    }));
     this.dmpTheme['dmp:hasDataCollection'] = dataCollection;
   }
 
@@ -107,7 +110,60 @@ export class ActionableDmpComponent implements OnInit {
   }
 
   private initializeSelectionAndPreservation() {
+    this.dmpTheme['hasPreservation'] = {};
+    const dataObjects = [];
 
+    this.tagMap.forEach((value: Resources[], key: string) => {
+      const dataObject = {};
+      const resources: Resources[] = this.tagMap.get(key);
+      for (let resource of resources) {
+
+        if (resource.resourceType === 'GitHub') {
+          const gitHubResource = <GitHubResource> resource;
+          dataObject['type'] = 'dmp:SourceCode';
+          dataObject['foaf:accountName'] = gitHubResource.repoName;
+          dataObject['dmp:Repository'] = 'https://github.com/'.concat(gitHubResource.repoName);
+          dataObject['dmp:hasDataVolume'] = gitHubResource.toString().concat(' KB (server side)');
+          dataObject['dc:creator'] = {
+            'foaf:name': gitHubResource.owner.login,
+            'foaf:OnlineAccount': gitHubResource.owner.html_url
+          };
+          dataObject['dmp:hasIntelectualPropertyRights'] = {
+            'dcterms:license': gitHubResource.licence_url
+          };
+        } else if (resource.resourceType === 'DOI') {
+          const doiResource = <DOIResource> resource;
+          const creators = [];
+          for (let creator of doiResource.creator) {
+            creators.push({
+              'foaf:name': creator
+            });
+          }
+          dataObject['dc:creator'] = creators;
+          dataObject['dmp:hasMetadata'] = {
+            'dcterms:description': doiResource.description
+          };
+          dataObject['dc:date'] = doiResource.date;
+          dataObject['dmp:Repository'] = doiResource.zenodo_identifier;
+          dataObject['dmp:hasIntelectualPropertyRights'] = {
+            'dcterms:license': resource.license
+          };
+          dataObject['dcterms:title'] = doiResource.title;
+        }
+
+        dataObject['dmp:dataCollection'] = resource.tag;
+
+        const preservation = this.preservationDurationMap.get(resource.tag).toString();
+        dataObject['dmp:Preservation'] = preservation.concat(' years');
+      }
+
+      dataObjects.push({'dmp:DataObject': dataObject});
+
+
+    });
+
+    this.dmpTheme['dmp:hasPreservation']['dmp:hasDataObject'] = [];
+    this.dmpTheme['dmp:hasPreservation']['dmp:hasDataObject'] = dataObjects;
   }
 
   private initializeDataSharing() {

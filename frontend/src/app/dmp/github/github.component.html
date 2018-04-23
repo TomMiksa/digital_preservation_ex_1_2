@@ -2,14 +2,12 @@
   <b>Repository: </b>{{resource.repoName}}
 </p>
 
-<p>
-  <b>License: </b>
-</p>
+
 <p *ngIf="resource.licence_url !== ''">
-  <a [href]="resource.licence_url" target="_blank">{{resource.license}}</a>
+  <b>License:</b> <a [href]="resource.licence_url" target="_blank">{{resource.license}}</a>
 </p>
 <p *ngIf="resource.licence_url === ''">
-  no licence information is provided
+  <b>License:</b> no licence information is provided
 </p>
 
 <p *ngIf="resource.owner !== undefined ">
@@ -34,5 +32,5 @@
   <b>Languages: </b>
 </p>
 <p *ngFor="let language of resource.languages">
-  {{language.name}} - {{language.loc}}
+  {{language.name}} - {{language.loc}} Lines of code
 </p>
