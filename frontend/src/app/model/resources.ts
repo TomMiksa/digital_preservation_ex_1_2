@@ -20,7 +20,7 @@ export interface GitHubResource extends Resources {
 
 
 export interface DOIResource extends Resources {
-  creator: string[];
+  creator: string;
   date: string;
   description: string;
   title: string;

@@ -133,13 +133,7 @@ export class ActionableDmpComponent implements OnInit {
           };
         } else if (resource.resourceType === 'DOI') {
           const doiResource = <DOIResource> resource;
-          const creators = [];
-          for (let creator of doiResource.creator) {
-            creators.push({
-              'foaf:name': creator
-            });
-          }
-          dataObject['dc:creator'] = creators;
+          dataObject['dc:creator'] = doiResource.creator;
           dataObject['dmp:hasMetadata'] = {
             'dcterms:description': doiResource.description
           };
@@ -196,6 +190,10 @@ export class ActionableDmpComponent implements OnInit {
 
   private initializeResponsibilitiesAndResources() {
     this.dmpTheme['dmp:hasRolesAndResponsibilities'] = {};
-    this.dmpTheme['dmp:hasRolesAndResponsibilities']['dmp:RolesAndReposnibilites'] = SharedConstants.responsibleManagement;
+    this.dmpTheme['dmp:hasRolesAndResponsibilities']['dmp:RolesAndReposnibilites'] = [
+      SharedConstants.responsibleManagement,
+      SharedConstants.responsibleResourceImplementation
+    ]
+
   }
 }
