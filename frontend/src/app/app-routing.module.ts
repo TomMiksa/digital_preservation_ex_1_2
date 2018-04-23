@@ -5,11 +5,12 @@ import {AuthComponent} from "./auth/auth.component";
 import {DmpComponent} from "./dmp/dmp.component";
 import {AuthGuard} from "./guard/auth.guard";
 import {GeneratedDmpComponent} from "./generated-dmp/generated-dmp.component";
+import {GeneratedGuard} from "./guard/generated.guard";
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'dmp', component: DmpComponent, canActivate: [AuthGuard]},
-  { path: 'gen', component: GeneratedDmpComponent, canActivate: [AuthGuard]},
+  { path: 'gen', component: GeneratedDmpComponent, canActivate: [AuthGuard, GeneratedGuard]},
   { path: 'auth', component: AuthComponent }
 ];
 

@@ -21,4 +21,15 @@ export class ReadableDmpService {
     this.preservationDurationMap = preservationDurationMap;
   }
 
+  isDefined(){
+    if(
+      this.administrativeData === undefined ||
+      this.tagMap === undefined ||
+      this.preservationDurationMap === undefined
+    ){
+      return false;
+    }
+    return true;
+  }
+
 }

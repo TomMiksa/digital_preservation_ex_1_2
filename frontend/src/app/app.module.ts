@@ -22,6 +22,7 @@ import {ReadableDmpComponent} from './generated-dmp/readable-dmp/readable-dmp.co
 import {ReadableDmpService} from "./service/readable-dmp.service";
 import {GeneratedDmpComponent} from './generated-dmp/generated-dmp.component';
 import {ActionableDmpComponent} from './generated-dmp/actionable-dmp/actionable-dmp.component';
+import {GeneratedGuard} from "./guard/generated.guard";
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import {ActionableDmpComponent} from './generated-dmp/actionable-dmp/actionable-
     AuthService,
     AdministrativeDataService,
     AuthGuard,
+    GeneratedGuard,
     MetadataService,
     ReadableDmpService
   ],
