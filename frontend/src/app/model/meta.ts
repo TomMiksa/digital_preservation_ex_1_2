@@ -6,7 +6,6 @@ export class Item {
 }
 
 export class FormControlMetadata {
-
   constructor(
     private label: string,
     private data: Array<Item>) {

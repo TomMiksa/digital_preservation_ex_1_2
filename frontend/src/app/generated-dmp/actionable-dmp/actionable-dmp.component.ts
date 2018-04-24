@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DOIResource, GitHubResource, Resources} from '../../model/resources';
 import {AdministrativeData} from '../../model/administrative-data';
 import {ReadableDmpService} from '../../service/readable-dmp.service';
-import {SharedConstants} from "../../model/sharedConstants";
+import {SharedConstants} from '../../model/sharedConstants';
 
 @Component({
   selector: 'app-actionable-dmp',
@@ -19,7 +19,6 @@ export class ActionableDmpComponent implements OnInit {
   dmpTheme = {};
 
   constructor(private readableDmpService: ReadableDmpService) {
-
   }
 
   ngOnInit() {

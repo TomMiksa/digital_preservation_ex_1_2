@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router} from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import {AuthService} from "../service/auth.service";
-import {ReadableDmpService} from "../service/readable-dmp.service";
+import {ReadableDmpService} from '../service/readable-dmp.service';
 
 @Injectable()
 export class GeneratedGuard implements CanActivate {

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GitHubResource} from "../../model/resources";
+import {GitHubResource} from '../../model/resources';
 
 @Component({
   selector: 'app-github',

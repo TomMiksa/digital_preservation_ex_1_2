@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {AdministrativeData} from "../model/administrative-data";
-import {Resources} from "../model/resources";
+import {AdministrativeData} from '../model/administrative-data';
+import {Resources} from '../model/resources';
 
 @Injectable()
 export class ReadableDmpService {

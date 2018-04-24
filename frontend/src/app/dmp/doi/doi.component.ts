@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {DOIResource} from "../../model/resources";
+import {DOIResource} from '../../model/resources';
 
 @Component({
   selector: 'app-doi',

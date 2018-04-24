@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {AuthService} from "../service/auth.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {OrcidToken} from "../model/orcid-token";
-import {HttpErrorResponse} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
+import {AuthService} from '../service/auth.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {OrcidToken} from '../model/orcid-token';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-auth',
@@ -25,8 +25,8 @@ export class AuthComponent implements OnInit {
 
   ngOnInit() {
     this.authService.handleAuthCallback(this.code).subscribe(
-      accessToken => {
-        this.handleSuccessFullAuthentication(accessToken);
+      orcidToken => {
+        this.handleSuccessFullAuthentication(orcidToken);
       },
       err => {
         this.handleFailedAuthentication(err);
@@ -36,8 +36,8 @@ export class AuthComponent implements OnInit {
       });
   }
 
-  handleSuccessFullAuthentication(accessToken: OrcidToken) {
-    this.authService.setAccessToken(accessToken);
+  handleSuccessFullAuthentication(orcidToken: OrcidToken) {
+    this.authService.setAccessToken(orcidToken);
     this.router.navigate(['/dmp']);
   }
 
@@ -47,7 +47,7 @@ export class AuthComponent implements OnInit {
   }
 
   handleFinishedAuthentication() {
-    console.log("Successfully logged in.")
+    console.log('Successfully logged in.')
   }
 
 }
