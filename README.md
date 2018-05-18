@@ -3,6 +3,34 @@
 ## Description
 The second part of the digital preservation exercise.
 
+# Reproducability
+
+## Backend
+
+The bootable jar is needed for docker to build successfully. This can be done with the gradle task:
+```shell
+./gradlew bootJar
+  ```
+This adds a .jar under the build/libs folder which then is used as a docker dependency. Unfortunately we were not able to include the docker script in the backend build.
+
+## Frontend
+
+No special requirements needed, docker installs all dependencies.
+
+# Docker Compose
+
+If the backend has been built successfully you can run:
+
+```shell
+docker-compose up
+  ```
+  
+This starts the backend (port 8080)and frontend (port 4200) which you can then access on localhost:4200
+
+# Contributers
+* [Michael Sober](https://orcid.org/0000-0002-9612-9022) <a href="https://orcid.org/0000-0002-9612-9022" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0002-9612-9022</a>
+* [Lukas Kathrein](https://orcid.org/0000-0001-5523-9383) <a href="https://orcid.org/0000-0001-5523-9383" target="orcid.widget" rel="noopener noreferrer" style="vertical-align:top;"><img src="https://orcid.org/sites/default/files/images/orcid_16x16.png" style="width:1em;margin-right:.5em;" alt="ORCID iD icon">orcid.org/0000-0001-5523-9383</a>
+
 ## LICENCE
 Copyright 2018 Lukas Kathrein, Michael Sober
 
