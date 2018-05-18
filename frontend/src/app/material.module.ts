@@ -24,7 +24,7 @@ import {
   MatToolbarModule,
   MatTooltipModule
 } from '@angular/material'
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [

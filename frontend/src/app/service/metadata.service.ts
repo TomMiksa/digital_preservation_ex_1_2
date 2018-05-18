@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from "../model/githubresponse";
-import {DOIResource, GitHubResource, Resources} from "../model/resources";
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {GitHubLanguageEntry, GitHubLicense, GitHubResponse, GitHubUser} from '../model/githubresponse';
+import {DOIResource, GitHubResource, Resources} from '../model/resources';
 
 @Injectable()
 export class MetadataService {
@@ -27,17 +27,17 @@ export class MetadataService {
   public parseDOIData(resource, data: string) {
     const fastXmlParser = require('fast-xml-parser');
     const options = {
-      attributeNamePrefix: "@_",
-      attrNodeName: "attr", //default is 'false'
-      textNodeName: "#text",
+      attributeNamePrefix: '@_',
+      attrNodeName: 'attr', //default is 'false'
+      textNodeName: '#text',
       ignoreAttributes: true,
       ignoreNameSpace: false,
       allowBooleanAttributes: false,
       parseNodeValue: true,
       parseAttributeValue: false,
       trimValues: true,
-      cdataTagName: "__cdata", //default is 'false'
-      cdataPositionChar: "\\c"
+      cdataTagName: '__cdata', //default is 'false'
+      cdataPositionChar: '\\c'
     };
 
     const tObj = fastXmlParser.getTraversalObj(data, options);
@@ -46,7 +46,7 @@ export class MetadataService {
     const relations = metadata['dc:relation'];
     const firstRelation = relations[0];
 
-    if (firstRelation.indexOf("github") !== -1) {
+    if (firstRelation.indexOf('github') !== -1) {
       const startRepoName = firstRelation.indexOf('github.com/') + 11;
       const endRepoName = firstRelation.indexOf('/tree');
       const repoName = firstRelation.substring(startRepoName, endRepoName);
@@ -116,7 +116,7 @@ export class MetadataService {
 
 
   private displayError(resource: Resources) {
-    resource.errorMsg = "there was an error";
+    resource.errorMsg = 'there was an error';
   }
 
   private removeError(resource: Resources) {

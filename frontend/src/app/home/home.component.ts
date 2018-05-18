@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {MatIconRegistry} from "@angular/material";
-import {DomSanitizer} from "@angular/platform-browser";
-import {AuthService} from "../service/auth.service";
-import {Router} from "@angular/router";
+import {MatIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
+import {AuthService} from '../service/auth.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +18,8 @@ export class HomeComponent implements OnInit {
     private domSanitizer: DomSanitizer
   ){
     this.matIconRegistry.addSvgIcon(
-      "iD",
-      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/iD_icon.svg")
+      'iD',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/iD_icon.svg')
     );
   }
 

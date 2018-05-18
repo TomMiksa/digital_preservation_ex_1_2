@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {DomSanitizer} from "@angular/platform-browser";
-import {MatIconRegistry} from "@angular/material";
-import {HttpErrorResponse} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {AdministrativeDataService} from "../service/administrative-data.service";
-import {Resources} from "../model/resources";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AdministrativeData} from "../model/administrative-data";
-import {AuthService} from "../service/auth.service";
-import {MetadataService} from "../service/metadata.service";
-import {FormControlMetadata, Item} from "../model/meta";
-import {ReadableDmpService} from "../service/readable-dmp.service";
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatIconRegistry} from '@angular/material';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {AdministrativeDataService} from '../service/administrative-data.service';
+import {Resources} from '../model/resources';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AdministrativeData} from '../model/administrative-data';
+import {AuthService} from '../service/auth.service';
+import {MetadataService} from '../service/metadata.service';
+import {FormControlMetadata, Item} from '../model/meta';
+import {ReadableDmpService} from '../service/readable-dmp.service';
 
 
 @Component({
@@ -61,8 +61,8 @@ export class DmpComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {
     this.matIconRegistry.addSvgIcon(
-      "iD",
-      this.domSanitizer.bypassSecurityTrustResourceUrl("../assets/iD_icon.svg")
+      'iD',
+      this.domSanitizer.bypassSecurityTrustResourceUrl('../assets/iD_icon.svg')
     );
 
 
@@ -98,7 +98,7 @@ export class DmpComponent implements OnInit {
   }
 
   handleSuccessFullAdministrativeDataResponse(administrativeData: AdministrativeData) {
-    console.log("Successfully retrieved administrative data.");
+    console.log('Successfully retrieved administrative data.');
     this.administrativeData = administrativeData;
   }
 
@@ -107,7 +107,7 @@ export class DmpComponent implements OnInit {
   }
 
   handleFinishedAdministrativeDataResponse() {
-    console.log("Successfully retrieved administrative data.")
+    console.log('Successfully retrieved administrative data.')
   }
 
   logout() {
@@ -159,7 +159,7 @@ export class DmpComponent implements OnInit {
       this.administrativeData,
       this.tagMap,
       this.preservationDurationMap);
-    this.router.navigate(["/gen"]);
+    this.router.navigate(['/gen']);
   }
 
   getTagMapKeys() {

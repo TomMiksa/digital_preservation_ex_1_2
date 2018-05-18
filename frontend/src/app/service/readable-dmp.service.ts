@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {AdministrativeData} from "../model/administrative-data";
-import {Resources} from "../model/resources";
+import {AdministrativeData} from '../model/administrative-data';
+import {Resources} from '../model/resources';
 
 @Injectable()
 export class ReadableDmpService {
@@ -19,6 +19,17 @@ export class ReadableDmpService {
     this.administrativeData = administrativeData;
     this.tagMap = tagMap;
     this.preservationDurationMap = preservationDurationMap;
+  }
+
+  isDefined(){
+    if(
+      this.administrativeData === undefined ||
+      this.tagMap === undefined ||
+      this.preservationDurationMap === undefined
+    ){
+      return false;
+    }
+    return true;
   }
 
 }

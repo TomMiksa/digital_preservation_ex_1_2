@@ -1,6 +1,4 @@
 <div>
-
-
   <div>
     <h2>{{administrativeData.project_title}}</h2>
   </div>
@@ -173,11 +171,11 @@
         <p class="answer">
           The following resources are retained, shared and preserved:
         </p>
-        <div *ngFor="let entry of getTagMapKeys()" class="answer">
+        <div *ngFor="let key of getTagMapKeys()" class="answer">
           <div class="category">
-            {{entry}}
+            {{key}}
           </div>
-          <div *ngFor="let resource of tagMap.get(entry)">
+          <div *ngFor="let resource of tagMap.get(key)">
             <div>
               <mat-card>
                 <mat-card-header>
